@@ -1,0 +1,322 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+/* Min css-kod */
+
+body{
+	background-color: #1b3d0b;
+}
+
+#container{
+	width: 800px;
+	margin: 0 auto;
+	margin-top: 50px;
+	background-color: silver;
+	background: url("../pics/casinobackground.jpg");
+	background-size: cover;
+}
+
+header{
+	width: 800px;
+	margin: 0 auto;
+	text-align: center;
+	background-color: black;
+}
+
+h1{
+	font-family: Verdana;
+	font-size: 12px;
+	color: white;
+	padding: 10px 10px;
+}
+
+#gamearea{
+	width: 800px;
+	height: 480px;
+	margin: 0 auto;
+	background-color: transparent;
+	background: url("../pics/blackjack5.jpg");
+	background-size: contain;
+	background-repeat: no-repeat; 
+}
+
+#dealerarea{
+	width: 600px;
+	height: 190px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#playerarea{
+	width: 600px;
+	height: 158px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#dealercards{
+	margin: 0 auto;
+	margin-top: 90px;
+}
+
+#playercards{
+	margin: 0 auto;
+}
+
+#betbutton{
+	margin-top: 15px;
+	width: 97px;
+	height: 26px;
+	background-color: white;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	opacity: 0.7;
+}
+
+#hitbutton{
+	margin-top: 15px;
+	width: 100px;
+	height: 26px;
+	background-color: white;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	opacity: 0.7;
+}
+
+#standbutton{
+	margin-right: 15px;
+	margin-top: 15px;
+	width: 100px;
+	height: 26px;
+	background-color: white;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	opacity: 0.7;
+}
+
+#chipcount{
+	text-align: center;
+	margin-top: 84px;
+	width: 110px;
+/*	background-image: url("../pics/dollar.png"); */
+}
+
+#chips{
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	font-size: 28px;
+	text-shadow: 5px 5px 3px black;
+	color: silver;
+}
+
+
+
+
+#chips::first-letter {
+  	font-size: 28px;
+}
+
+
+
+
+
+
+
+#betamount{
+	text-align: center;
+	margin-left: 223px;
+	width: 400px;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 10px;
+	color: white;
+	margin-top: 4px;
+}
+
+
+
+
+/* Styling av radioknappar från http://www.hongkiat.com/blog/css3-checkbox-radio/ */
+
+label {
+    display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 20px;
+    margin-right: 15px;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+label:before {
+    content: "";
+    display: inline-block;
+ 
+    width: 16px;
+    height: 16px;
+ 
+    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: grey;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+.radio label:before {
+    border-radius: 8px;
+}
+
+input[type=radio]:checked + label:before {
+    content: "\2022";
+    color: #d1121f ;
+    font-size: 44px;
+    text-align: center;
+    line-height: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+
+#messages{
+	margin-left: 30px;
+}
+
+#messagetext{
+	font-family: Verdana;
+	font-size: 12px;
+	margin-top: 5px;
+	padding: 5px 5px;
+}
+
+.win{
+	color: green;
+}
+
+.lose{
+	color: red;
+}
+
+.tie{
+	color: blue;
+}
+
+.blackjack{
+	color: yellow;
+}
+
+.normal{
+	color: white;
+}
+
+.inactive{
+	display: none;
+}
+
+.active{
+	display: inline;
+}
+
+.active2{
+	display: block;
+}
+
+footer{
+	width: 800px;
+	margin: 0 auto;
+	text-align: right;
+	background-color: black;
+}
+
+footer p{
+	font-family: Verdana;
+	font-size: 8px;
+	font-style: italic;
+	color: white;
+	padding: 5px 5px;
+	margin-right: 5px;
+}
+
+#newgamebutton{
+	background-color: black;
+	color: white;
+	width: 100px;
+	height: 50px;
+}
+
+#resumegamebutton{
+	margin-bottom: 50px;
+	background-color: black;
+	color: white;
+	width: 200px;
+	height: 50px;
+}
+
+#savebutton{
+	font-size: 10px;
+	margin-top: 7px;
+	width: 50px;
+	height: 15px;
+}
+
