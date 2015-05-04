@@ -176,7 +176,7 @@ var Game = {
                 
         },2000); 
 
-        // Härifrån bestämmer spelaren vad som händer
+        // Härifrån bestämmer spelaren vad som händer.
         
         Game.hitButton.onclick = function () {
             
@@ -207,7 +207,7 @@ var Game = {
         
         if(Game.playerScore > 21) {
             
-            // Kollar om det finns ett ess som kan göras om från 11 till 1
+            // Kollar om det finns ett ess som kan göras om från 11 till 1.
             if(Game.playerHasAce > 0) {
                             
                 Game.playerScore -= 10;
@@ -243,10 +243,10 @@ var Game = {
                 Game.dealerHasAce += 1;
             }
         
-            // Körs när dealern har minst två kort
+            // Körs när dealern har minst två kort.
             if(Game.dealerCardCounter >= 2) {
             
-                // Dealern drar kort så länge poängen är under 17
+                // Dealern drar kort så länge poängen är under 17.
                 if(Game.dealerScore < 17) {
                         
                     Game.dealerHits();
@@ -255,7 +255,7 @@ var Game = {
                     
                     if(Game.dealerScore > 21) {
                         
-                        // Kollar om det finns ett ess som kan göras om från 11 till 1
+                        // Kollar om det finns ett ess som kan göras om från 11 till 1.
                         if(Game.dealerHasAce > 0) {
                             
                              Game.dealerScore -= 10;
@@ -290,14 +290,14 @@ var Game = {
         
         setTimeout(function(){
                     
-            // Rensar meddelanden från föregående runda
+            // Rensar meddelanden från föregående runda.
             Game.messageText.innerHTML = "";
                     
         },1000); 
         
         setTimeout(function(){
                     
-            // "Samlar" in alla kort, dvs rensar canvas
+            // "Samlar" in alla kort, dvs rensar canvas.
             var temp1 = document.getElementById("playercards");
             temp1.getContext('2d').clearRect(0, 0, temp1.width, temp1.height);
         
@@ -310,16 +310,16 @@ var Game = {
         
         setTimeout(function(){
                     
-            // Flyttar de kort som varit i spel till en egen array
+            // Flyttar de kort som varit i spel till en egen array.
             for (var i = 0; i < Deck.cardsInPlay.length; i+=1) {
             
                 Deck.usedCards.push(Deck.cardsInPlay[i]);
             }
         
-            // Rensar arrayen för kort i spel
+            // Rensar arrayen för kort i spel.
             Deck.cardsInPlay.length = 0;
         
-            // Nollställer poäng, aktuellt kort och korträknare
+            // Nollställer poäng, aktuellt kort och korträknare.
             Game.playerScore = 0;
             Game.dealerScore = 0;
             Deck.currentCard = null;
@@ -371,10 +371,10 @@ var Deck = {
     
     createDeck: function() {
         
-        // Kollar om det är första gången en kortlek skapas
+        // Kollar om det är första gången en kortlek skapas.
         if(Deck.usedCards.length == 0)
         {
-            // Skapar en ny kortlek med 52 kort
+            // Skapar en ny kortlek med 52 kort.
             Deck.cards = [
             "h1", "h2", "h3", "h4", "h5", "h6", "h7", "h8", "h9", "h10", "h11", "h12", "h13",
             "c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "c9", "c10", "c11", "c12", "c13",
@@ -383,13 +383,13 @@ var Deck = {
         }
         else
         {
-            // Skapar en kortlek av alla de använda korten
+            // Skapar en kortlek av alla de använda korten.
             for (var i = 0; i < Deck.usedCards.length; i+=1) {
             
                 Deck.cards.push(Deck.usedCards[i]);
             }
             
-            // Rensar arrayen för använda kort
+            // Rensar arrayen för använda kort.
             Deck.usedCards.length = 0;
         }
     },
@@ -416,10 +416,10 @@ var Deck = {
         // Drar nästa kort i kortleken. 
         Deck.currentCard = Deck.cards.shift();
         
-        // Håller reda på vilka kort som är i spel i en separat array
+        // Håller reda på vilka kort som är i spel i en separat array.
         Deck.cardsInPlay.push(Deck.currentCard);
         
-        // Om kortleken tar slut så skapas och blandas en ny direkt
+        // Om kortleken tar slut så skapas och blandas en ny direkt.
         if (Deck.cards.length === 0)
         {
             Deck.createDeck();
@@ -437,13 +437,13 @@ var Deck = {
 
 
 
-// Funktioner för beräkning av poäng
+// Funktioner för beräkning av poäng.
 
 var Score = {
     
     recalculate: function(card) {
     
-        // Omvandlar varje kort till rätt poäng    
+        // Omvandlar varje kort till rätt poäng.  
         var score;
         
         card = card.substring(1);
@@ -465,7 +465,7 @@ var Score = {
     
     compare: function() {
         
-        // Jämför spelarens och dealerns poäng och ser till att rätt meddelande visas
+        // Jämför spelarens och dealerns poäng och ser till att rätt meddelande visas.
         
         if(Game.playerScore > Game.dealerScore && Game.playerScore === 21 && Game.playerCardCounter === 2) {
             
@@ -571,7 +571,7 @@ var Score = {
 
 
 
-// Funktioner för visning av kort med canvas
+// Funktioner för visning av kort med canvas.
 // Spelkort från http://www.jfitz.com/cards/
 
 var Card = {
@@ -719,6 +719,7 @@ var Card = {
 
 
 
+// Funktioner för visning av en visuell spelmark med canvas.
 
 var Chip = {
     
@@ -767,7 +768,7 @@ var Chip = {
 
 
 
-// Funktioner för utskrift av meddelanden
+// Funktioner för utskrift av meddelanden.
 
 var Messages = {
     
@@ -842,7 +843,7 @@ var Table = {
 
 
 
-
+// Funktioner för att spara och hämta antalet marker i local storage.
 
 var GameProgress = {
     
