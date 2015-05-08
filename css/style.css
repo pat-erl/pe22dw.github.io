@@ -52,7 +52,8 @@ table {
 /* Min css-kod */
 
 body{
-	background-color: #1b3d0b;
+	background-color: black;
+	/* background-color: #1b3d0b; */
 }
 
 #container{
@@ -62,6 +63,9 @@ body{
 	background-color: silver;
 	background: url("../pics/casinobackground.jpg");
 	background-size: cover;
+	border-width: 3px;
+	border-color: #1b2c3f;
+	border-style: solid;
 }
 
 header{
@@ -75,7 +79,7 @@ h1{
 	font-family: Verdana;
 	font-size: 12px;
 	color: white;
-	padding: 10px 10px;
+	padding: 8px 8px;
 }
 
 #gamearea{
@@ -84,8 +88,9 @@ h1{
 	margin: 0 auto;
 	background-color: transparent;
 	background: url("../pics/blackjack5.jpg");
-	background-size: contain;
-	background-repeat: no-repeat; 
+	background-size: 814px;
+	background-repeat: no-repeat;
+	background-position: right 0px bottom 0px;
 }
 
 #dealerarea{
@@ -112,68 +117,74 @@ h1{
 }
 
 #betbutton{
-	margin-top: 15px;
-	width: 97px;
-	height: 26px;
+	margin-top: 2px;
+	width: 100px;
+	height: 30px;
 	background-color: white;
 	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
-	opacity: 0.7;
+	opacity: 0.8;
+	border-radius: 10px;
+    border: 1px solid black;
 }
 
 #hitbutton{
-	margin-top: 15px;
+	margin-top: 6px;
 	width: 100px;
-	height: 26px;
+	height: 30px;
 	background-color: white;
 	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
 	opacity: 0.7;
+	border-radius: 10px;
+    border: 1px solid black;
 }
 
 #standbutton{
-	margin-right: 15px;
-	margin-top: 15px;
+	margin-right: 20px;
+	margin-top: 6px;
 	width: 100px;
-	height: 26px;
+	height: 30px;
 	background-color: white;
 	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
 	opacity: 0.7;
+	border-radius: 10px;
+    border: 1px solid black;
 }
 
 #chipcount{
-	text-align: center;
-	margin-top: 84px;
-	width: 110px;
-/*	background-image: url("../pics/dollar.png"); */
+	margin-top: 72px;
 }
 
 #chips{
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	text-shadow: 3px 3px 3px black;
+	float: left;
+	margin-left: 205px;
+	border-radius: 10px;
+    border: 2px solid dodgerblue;
+    padding: 1px 3px;
+    background-color: black;
+}
+
+.chipswin{
 	font-size: 28px;
-	text-shadow: 5px 5px 3px black;
+	position: relative;
+	top: -130px;
+	/*right: -160px; */
+}
+
+.chipsnormal{
 	color: silver;
+	font-size: 28px;
 }
-
-
-
-
-#chips::first-letter {
-  	font-size: 28px;
-}
-
-
-
-
-
-
 
 #betamount{
 	text-align: center;
@@ -182,7 +193,7 @@ h1{
 	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 	font-size: 10px;
 	color: white;
-	margin-top: 4px;
+	margin-top: 8px;
 }
 
 
@@ -213,7 +224,7 @@ label:before {
     position: absolute;
     left: 0;
     bottom: 1px;
-    background-color: grey;
+    background-color: #4c4c4c;
     box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
 }
 
@@ -223,10 +234,10 @@ label:before {
 
 input[type=radio]:checked + label:before {
     content: "\2022";
-    color: #d1121f ;
+    color: #CC0000;
     font-size: 44px;
     text-align: center;
-    line-height: 16px;
+    line-height: 15px;
 }
 
 
@@ -234,41 +245,6 @@ input[type=radio]:checked + label:before {
 
 
 
-
-
-
-
-
-#messages{
-	margin-left: 30px;
-}
-
-#messagetext{
-	font-family: Verdana;
-	font-size: 18px;
-	padding: 5px 5px;
-	margin-left: 306px;
-}
-
-.win{
-	color: green;
-}
-
-.lose{
-	color: red;
-}
-
-.tie{
-	color: blue;
-}
-
-.blackjack{
-	color: yellow;
-}
-
-.normal{
-	color: white;
-}
 
 .inactive{
 	display: none;
@@ -284,39 +260,107 @@ input[type=radio]:checked + label:before {
 
 footer{
 	width: 800px;
+	height: 22px;
 	margin: 0 auto;
-	text-align: right;
 	background-color: black;
+	text-align: center;
 }
 
-footer p{
+#strategytips{
 	font-family: Verdana;
-	font-size: 8px;
-	font-style: italic;
-	color: white;
-	padding: 5px 5px;
-	margin-right: 5px;
+	font-size: 12px;
+	color: dodgerblue;
+	padding-top: 6px;
 }
 
 #newgamebutton{
 	background-color: black;
 	color: white;
-	width: 100px;
-	height: 50px;
+	font-family: Verdana;
+	padding: 15px 15px;
+	font-weight: bold;
+	font-size: 12px;
+	border-radius: 20px;
+    border: 2px solid dodgerblue;
+    margin: 0 auto;
+    margin-left: 5px;
 }
 
 #resumegamebutton{
-	margin-bottom: 50px;
 	background-color: black;
 	color: white;
-	width: 200px;
-	height: 50px;
+	font-family: Verdana;
+	margin-right: 10px;
+	padding: 15px 15px;
+	font-weight: bold;
+	font-size: 12px;
+	border-radius: 20px;
+    border: 2px solid yellow;
+    margin: 0 auto;
+}
+
+#removebutton{
+	background-color: black;
+	color: white;
+	font-family: Verdana;
+	padding: 5px 5px;
+	font-size: 10px;
+	border-radius: 30px;
+    border: 2px solid red;
+    margin: 0 auto;
+    font-weight: bold;
+    margin-left: 5px;
 }
 
 #savebutton{
 	font-size: 10px;
-	margin-top: 7px;
-	width: 50px;
-	height: 15px;
+	background-color: black;
+	border-width: 1px;
+	border-color: silver;
+	color: silver;
+	font-family: Verdana;
+	font-weight: bold;
+	float: left;
+	margin-left: 7px;
+	padding: 1px 1px;
+	margin-top: 8px;
 }
 
+#tinymessage{
+	font-family: Verdana;
+	font-size: 10px;
+	color: chartreuse;
+	margin-left: 5px;
+	font-style: italic;
+	float: left;
+	margin-top: 6px;
+	background-color: black;
+	padding: 5px 5px;
+}
+
+#tutorial{
+	margin: 0 auto;
+	width: 450px;
+	background-color: black;
+}
+
+.tutorialtext{
+	padding-left: 10px;
+	padding-top: 7px;
+	font-family: Verdana;
+	color: white;
+	font-size: 12px;
+	line-height: 140%;
+}
+
+#tutorialbutton{
+	width: 120px;
+	height: 20px;
+	margin-left: 166px;
+	background-color: white;
+	color: black;
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 10px;
+	margin-bottom: 7px;
+}

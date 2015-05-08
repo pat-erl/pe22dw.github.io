@@ -16,8 +16,9 @@ var Game = {
     bet100: document.getElementById("bet100"),
     bet500: document.getElementById("bet500"),
     bet1000: document.getElementById("bet1000"),
-    messageText: document.getElementById("messagetext"),
+    tinyMessage: document.getElementById("tinymessage"),
     saveButton: document.getElementById("savebutton"),
+    strategyTips: document.getElementById("strategytips"),
 
     playerScore: 0,
     dealerScore: 0,
@@ -27,7 +28,8 @@ var Game = {
     dealerCardCounter: 0,
     playerHasAce: 0,
     dealerHasAce: 0,
-  
+    strategyTipsIsOn: false,
+
     init: function() {
         
         Table.fadeTable();
@@ -38,56 +40,68 @@ var Game = {
         Game.chipCount.className = "inactive";
         Game.betAmount.className = "inactive";
         Game.saveButton.className = "inactive";
+        Game.chips.className = "chipsnormal";
         
+        var resumeGameButton = document.createElement("button");
+        resumeGameButton.id = "resumegamebutton";
+        resumeGameButton.innerHTML = "RESUME LAST SAVED GAME";
         
-        // New game och resumegame borde gå att slå ihop på något sätt!
-        
-        var text = document.createElement("button");
-        text.id = "newgamebutton";
-        text.innerHTML = "NEW GAME";
-        
-        document.getElementById("dealerarea").appendChild(text);
-        
-        text.onclick = function () {
-            
-            text.className = "inactive";
-            text2.className = "inactive";
-            Game.newGame();
-        };
-        
-        var text2 = document.createElement("button");
-        text2.id = "resumegamebutton";
-        text2.innerHTML = "RESUME PREVIOUS GAME";
+        var removeButton = document.createElement("button");
+        removeButton.id = "removebutton";    
+        removeButton.innerHTML = "CLEAR";
         
         if (localStorage.getItem("playerchips") !== null) {
             
-            document.getElementById("playerarea").appendChild(text2);
+            document.getElementById("playerbuttons").appendChild(resumeGameButton);
             
-            text2.onclick = function () {
+            document.getElementById("playerbuttons").appendChild(removeButton);
             
-                text.className = "inactive";
-                text2.className = "inactive";
+            resumeGameButton.onclick = function () {
+            
+                resumeGameButton.className = "inactive";
+                newGameButton.className = "inactive";
+                removeButton.className = "inactive";
                 Game.resumeGame();
             };
+            
+            removeButton.onclick = function () {
+                
+                localStorage.removeItem('playerchips');
+                document.location.reload();
+            };
         } 
+        
+        var newGameButton = document.createElement("button");
+        newGameButton.id = "newgamebutton";
+        newGameButton.innerHTML = "NEW GAME";
+        
+        document.getElementById("playerbuttons").appendChild(newGameButton);
+        
+        newGameButton.onclick = function () {
+            
+            newGameButton.className = "inactive";
+            resumeGameButton.className = "inactive";
+            removeButton.className = "inactive";
+            Game.tutorial();
+        };
     },
     
+    
+     // New game och resumegame borde gå att slå ihop på något sätt! om resumegame anropasnewgame men med med pareameter om resumegame, det som skiljer är markerantalet!
+     
     newGame: function() {
-        
-        // localStorage.removeItem('playerchips'); // Om behöver rensa localstorage!
         
         Table.showTable();
         
         Deck.createDeck();
         Deck.shuffleDeck();
         
-        Game.playerChips = 20000;
+        Game.playerChips = 2000;
         
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
         
-        // Här kan tutorial ligga sen!
-        
+        Table.showRadioButtons();
         Game.betButton.className = "active";
         Game.betAmount.className = "active2";
         
@@ -111,6 +125,7 @@ var Game = {
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
         
+        Table.showRadioButtons();
         Game.betButton.className = "active";
         Game.betAmount.className = "active2";
         
@@ -129,67 +144,84 @@ var Game = {
         if(Game.bet500.checked) {
             
             Game.playerBet = 500;
+            Chip.textColor = "#CC00CC";
             
-        } else if(Game.bet1000.checked) {
+            } else if(Game.bet1000.checked) {
             
             Game.playerBet = 1000;
+            Chip.textColor = "gold";
+            
+            } else {
+            
+            Game.playerBet = 100;
+            Chip.textColor = "white";
+        }
+        
+        if(Game.playerChips < Game.playerBet) {
+            
+            var noChips = "NOT ENOUGH CHIPS!";
+            Messages.textColor = "red";
+            Messages.displayMessage(noChips);
+            Table.showRadioButtons();
+            Game.betButton.className = "active";
             
         } else {
             
-            Game.playerBet = 100;
+            Game.playerChips -= Game.playerBet;
+            Game.chips.innerHTML = "$" + Game.playerChips;
+            
+            Chip.displayChip();
+        
+            setTimeout(function(){
+                
+                Game.playerHits();
+                        
+            },500); 
+            
+            setTimeout(function(){
+                        
+                Game.dealerHits();
+                        
+            },500); 
+            
+            setTimeout(function(){
+                        
+                Game.playerHits();
+                Strategy.calculate();
+                
+            },1500); 
+            
+            setTimeout(function(){
+                
+                if(Game.playerScore === 21 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
+                    
+                    Score.compare();
+                    
+                } else {
+                    
+                    Game.hitButton.className = "active";
+                    Game.standButton.className = "active";
+                }
+                    
+            },2000); 
+    
+            // Härifrån bestämmer spelaren vad som händer.
+            
+            Game.hitButton.onclick = function () {
+                
+                Game.playerHits();
+                Strategy.calculate();
+            };
+            
+            Game.standButton.onclick = function () {
+                
+                Game.hitButton.className = "inactive";
+                Game.standButton.className = "inactive";
+                Game.strategyTips.innerHTML = "";
+                
+                Game.dealerHits();
+            };
         }
-        
-        Game.playerChips -= Game.playerBet;
-        Game.chips.innerHTML = "$" + Game.playerChips;
-        
-        Chip.displayChip();
-        
-        setTimeout(function(){
-            
-            Game.playerHits();
-                    
-        },500); 
-        
-        setTimeout(function(){
-                    
-            Game.dealerHits();
-                    
-        },500); 
-        
-        setTimeout(function(){
-                    
-            Game.playerHits();
-            
-        },1500); 
-        
-        setTimeout(function(){
-            
-            if(Game.playerScore === 21 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
-                
-                Score.compare();
-                
-            } else {
-                
-                Game.hitButton.className = "active";
-                Game.standButton.className = "active";
-            }
-                
-        },2000); 
-
-        // Härifrån bestämmer spelaren vad som händer.
-        
-        Game.hitButton.onclick = function () {
-            
-            Game.playerHits();
-        };
-        
-        Game.standButton.onclick = function () {
-            
-            Game.hitButton.className = "inactive";
-            Game.standButton.className = "inactive";
-            
-            Game.dealerHits();
-        };
     },
     
     playerHits: function() {
@@ -197,8 +229,6 @@ var Game = {
         Deck.drawCard();
         Game.playerCardCounter += 1;
         Card.displayPlayerCard(Deck.currentCard);
-        Game.playerScore = Game.playerScore + Score.recalculate(Deck.currentCard);
-        Score.displayPlayerScore();
         
         if(Deck.currentCard.substring(1) === "1") {
             
@@ -213,17 +243,20 @@ var Game = {
                 Game.playerScore -= 10;
                 Score.displayPlayerScore();
                 Game.playerHasAce -= 1;
+                
+                if(Game.playerScore === 22) {
+                    
+                    Game.hitButton.className = "inactive";
+                    Game.standButton.className = "inactive";
+                    Score.compare();
+                }
                         
             } else {
                 
                 Game.hitButton.className = "inactive";
                 Game.standButton.className = "inactive";
-                            
-                //setTimeout(function(){
-                            
-                    Score.playerBust();
-                    
-                //},1000); 
+                
+                Score.compare();
             }
         }
     },
@@ -235,18 +268,16 @@ var Game = {
             Deck.drawCard();
             Game.dealerCardCounter += 1;
             Card.displayDealerCard(Deck.currentCard);
-            Game.dealerScore = Game.dealerScore + Score.recalculate(Deck.currentCard);  
-            Score.displayDealerScore();
             
             if(Deck.currentCard.substring(1) === "1") {
             
                 Game.dealerHasAce += 1;
             }
         
-            // Körs när dealern har minst två kort.
+            // Körs bara när dealern har minst två kort.
             if(Game.dealerCardCounter >= 2) {
             
-                // Dealern drar kort så länge poängen är under 17.
+                // Dealern drar fler kort så länge poängen är under 17.
                 if(Game.dealerScore < 17) {
                         
                     Game.dealerHits();
@@ -262,24 +293,23 @@ var Game = {
                              Score.displayDealerScore();
                              Game.dealerHasAce -= 1;
                              
-                             Game.dealerHits();
+                             if(Game.dealerScore === 17) {
+                                 
+                                 Score.compare();
+                                 
+                             } else {
+                                 
+                                 Game.dealerHits();
+                             }
                         
                         } else {
                             
-                            //setTimeout(function(){
-                            
-                                Score.dealerBust();
-                    
-                            //},1000); 
+                            Score.compare();
                         }
                         
                     } else {
                         
-                        //setTimeout(function(){
-                    
-                            Score.compare();
-                    
-                        //},1000); 
+                        Score.compare();
                     }
                 }
             }
@@ -288,25 +318,54 @@ var Game = {
     
     roundIsOver: function() {
         
-        setTimeout(function(){
-                    
-            // Rensar meddelanden från föregående runda.
-            Game.messageText.innerHTML = "";
-                    
-        },1000); 
+         if(Messages.textColorP === "chartreuse" || Messages.textColorP === "magenta" || Messages.textColorP === "dodgerblue") {
+       
+            Game.chips.className = "chipswin";
+            Game.chips.style.color = "silver";
+        
+            setTimeout(function() {
+                
+                // Rensar bort den första marken samt extramarkerna för Blackjack.
+                var temp3 = document.getElementById("playercards");
+                temp3.getContext('2d').clearRect(0, 20, 80, 60);
+                
+                var temp5 = document.getElementById("playercards");
+                temp5.getContext('2d').clearRect(0, 0, 55, 60);
+                
+                var temp6 = document.getElementById("dealercards");
+                temp6.getContext('2d').clearRect(0, 60, 60, 40);
+                
+                Game.chips.style.fontWeight = "bold";
+                Game.chips.style.color = Chip.textColor;
+                Game.chips.innerHTML = "$" + Game.playerChips;
+           
+            },500);
+        
+        } else {
+            
+            setTimeout(function() {
+                
+                // Rensar bort den första marken.
+                var temp4 = document.getElementById("playercards");
+                temp4.getContext('2d').clearRect(0, 20, 80, 60);
+                
+            },500);
+        } 
         
         setTimeout(function(){
-                    
+            
             // "Samlar" in alla kort, dvs rensar canvas.
             var temp1 = document.getElementById("playercards");
             temp1.getContext('2d').clearRect(0, 0, temp1.width, temp1.height);
         
             var temp2 = document.getElementById("dealercards");
-            temp2.getContext('2d').clearRect(0, 0, temp2.width, temp1.height);
+            temp2.getContext('2d').clearRect(0, 0, temp2.width, temp2.height);
             
-            Game.chips.innerHTML = "$" + Game.playerChips;
-                    
-        },2000);
+            Game.chips.style.fontWeight = "normal";
+            Game.chips.style.color = "silver";
+            Game.chips.className = "chipsnormal";
+            
+        },1000);
         
         setTimeout(function(){
                     
@@ -327,27 +386,70 @@ var Game = {
             Game.dealerCardCounter = 0;
             Game.playerHasAce = 0;
             Game.dealerHasAce = 0;
+            Messages.textColorP = "";
             
-            Table.showRadioButtons();
-            Game.betButton.className = "active";
-            
-            Game.saveButton.className = "active";
-            
-            Game.saveButton.onclick = function () {
+            if(Game.playerChips < 100) {
                 
-                Game.saveButton.className = "inactive";
-                GameProgress.save();
-            };
-                    
-        },3000); 
-        
-        Game.betButton.onclick = function () {
+                Game.gameOver();
+                
+            } else {
+                
+                Table.showRadioButtons();
+                Game.betButton.className = "active";
             
-            Game.betButton.className = "inactive";
-            Table.fadeRadiobuttons();
-            Game.saveButton.className = "inactive";
-            Game.newRound();
+                Game.betButton.onclick = function () {
+            
+                    Game.betButton.className = "inactive";
+                    Table.fadeRadiobuttons();
+                    Game.saveButton.className = "inactive";
+                    Game.newRound();
+                };
+            
+                Game.saveButton.className = "active";
+            
+                Game.saveButton.onclick = function () {
+                
+                    Game.saveButton.className = "inactive";
+                    GameProgress.save();
+                };
+            }
+            
+        },1500);
+    },
+    
+    tutorial: function() {
+        
+        var tutorial = document.createElement("div");
+        tutorial.id = "tutorial";
+        Game.gameArea.appendChild(tutorial);
+        
+        var tutorialText = document.createElement("p");
+        tutorialText.className = "tutorialtext";
+        tutorialText.innerHTML = "*Get a higher score than the dealer without getting over 21.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are all worth 10 points.<br />*Dealer must draw on 16 points and below.<br />*21 points made with only two cards beats 21 points with several. <br /><br />Have fun and good luck!";
+        tutorial.appendChild(tutorialText);
+        
+        var tutorialButton = document.createElement("button");
+        tutorialButton.id = "tutorialbutton";
+        tutorialButton.innerHTML = "START THE GAME";
+        tutorialText.appendChild(tutorialButton);
+        
+        tutorialButton.onclick = function() {
+            
+            Game.newGame();
+            tutorial.className = "inactive";
         };
+    },
+    
+    gameOver: function() {
+        
+        if (confirm("You ran out of chips! Try again?")) { 
+            
+            Game.newGame();
+        
+        } else {
+            
+            Game.init();
+        }
     },
 };
 
@@ -408,7 +510,8 @@ var Deck = {
             Deck.cards[i] = t;
         }
         
-        alert("Kortleken har blandats");
+        var shuffleMessage = "DECK SHUFFLED";
+        Messages.displayMessageOther(shuffleMessage);
     },
     
     drawCard: function() {
@@ -441,6 +544,9 @@ var Deck = {
 
 var Score = {
     
+    win: "WINS",
+    draw: "TIES",
+    
     recalculate: function(card) {
     
         // Omvandlar varje kort till rätt poäng.  
@@ -463,80 +569,94 @@ var Score = {
         }
     },
     
+     // Jämför spelarens och dealerns poäng och ser till att rätt belopp och rätt meddelande visas.
     compare: function() {
         
-        // Jämför spelarens och dealerns poäng och ser till att rätt meddelande visas.
+        // Detta händer om spelaren har mer än 21 poäng.
+        if(Game.playerScore > 21) {
+            
+            Score.dealerWin();
         
-        if(Game.playerScore > Game.dealerScore && Game.playerScore === 21 && Game.playerCardCounter === 2) {
+        // Detta händer om dealern har mer än 21 poäng.    
+        } else if(Game.dealerScore > 21) {
             
-            var message6 = "BLACKJACK!!";
-            Game.messageText.className = "blackjack";
-            Messages.displayMessage(message6);    
+            Score.playerWin();
             
-            Chip.displayChip();
-            
-            Game.playerChips = Game.playerChips + (Game.playerBet * 2.5);
-            
+        // Detta händer om spelaren har mer poäng än dealern.
         } else if(Game.playerScore > Game.dealerScore) {
             
-            var message = "PLAYER WINS";
-            Game.messageText.className = "win";
-            Messages.displayMessage(message);    
+            if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
+                
+                Score.blackJack();
+                
+            } else {
+                
+                Score.playerWin();
+            }
+        
+        // Detta händer om dealern har mer poäng än spelaren.
+        } else if(Game.dealerScore > Game.playerScore) {
             
-            Chip.displayChip();
-            
-            Game.playerChips = Game.playerChips + (Game.playerBet * 2);
-                
-        } else if(Game.playerScore < Game.dealerScore) {
-                
-            var message2 = "DEALER WINS";
-            Game.messageText.className = "lose";
-            Messages.displayMessage(message2);   
-                
+            Score.dealerWin();
+        
+        // Detta händer om spelaren och dealern har samma poäng.    
         } else {
             
-            var message3 = "PLAYER AND DEALER TIES";
-            Game.messageText.className = "tie";
-            Messages.displayMessage(message3); 
-
-            Game.playerChips = Game.playerChips + Game.playerBet;
+            if(Game.playerScore === 21 && Game.playerCardCounter === 2 && Game.dealerCardCounter > 2) {
+                
+                Score.blackJack();
+                
+            } else if(Game.dealerScore === 21 && Game.dealerCardCounter === 2 && Game.playerCardCounter > 2) {
+                
+                Score.dealerWin();
+                
+            } else {
+                
+                Score.nobodyWin();
+            }
         }
         
         setTimeout(function(){
             
             Game.roundIsOver();
                     
-        },1000); 
+        },2000); 
     },
     
-    playerBust: function() {
+    blackJack: function() {
         
-        var message4 = "PLAYER BUSTED";
-        Game.messageText.className = "lose";
-        Messages.displayMessage(message4);
-        
-        setTimeout(function(){
+        Messages.textColorP = "magenta";
+        Messages.displayMessageP(Score.win);    
             
-            Game.roundIsOver();
-                    
-        },1000); 
-    },
-    
-    dealerBust: function() {
-        
-        var message5 = "DEALER BUSTED";
-        Game.messageText.className = "win";
-        Messages.displayMessage(message5);
-        
         Chip.displayChip();
-        
-        Game.playerChips = Game.playerChips + (Game.playerBet * 2);
-        
-        setTimeout(function(){
             
-            Game.roundIsOver();
-                    
-        },1000);
+        Game.playerChips = Game.playerChips + (Game.playerBet * 2.5);
+    },
+    
+    playerWin: function() {
+        
+        Messages.textColorP = "chartreuse";
+        Messages.displayMessageP(Score.win);    
+            
+        Chip.displayChip();
+            
+        Game.playerChips = Game.playerChips + (Game.playerBet * 2);
+    },
+    
+    dealerWin: function() {
+        
+        Messages.textColorD = "chartreuse";    
+        Messages.displayMessageD(Score.win);
+    },
+    
+    nobodyWin: function() {
+        
+        Messages.textColorP = "dodgerblue";
+        Messages.textColorD = "dodgerblue";
+        Messages.displayMessageP(Score.draw); 
+        Messages.displayMessageD(Score.draw); 
+
+        Game.playerChips = Game.playerChips + Game.playerBet;
     },
     
     displayPlayerScore: function() {
@@ -545,7 +665,7 @@ var Score = {
         var context4 = canvas4.getContext('2d');
         
         context4.clearRect(0, 0, 80, 30);
-        context4.font = "13px Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif";
+        context4.font = "14px Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif";
         context4.fillStyle = "white";
         context4.fillText(Game.playerScore, 60, 15);
     },
@@ -556,7 +676,7 @@ var Score = {
         var context5 = canvas5.getContext('2d');
         
         context5.clearRect(0, 0, 80, 30);
-        context5.font = "13px Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif";
+        context5.font = "14px Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif";
         context5.fillStyle = "white";
         context5.fillText(Game.dealerScore, 60, 15);
     },
@@ -643,7 +763,19 @@ var Card = {
             
             context.drawImage(image7p, 215, 0, 64, 86);
             };
+            
+        } else if (Game.playerCardCounter === 8) {
+            
+            var image8p = new Image();
+            image8p.src = "../pics/cards/"+ card + ".png";
+            image8p.onload = function() {
+            
+            context.drawImage(image8p, 235, 0, 64, 86);
+            };
         }
+        
+        Game.playerScore = Game.playerScore + Score.recalculate(Deck.currentCard);
+        Score.displayPlayerScore();
     },
     
     displayDealerCard: function(card) {
@@ -713,7 +845,19 @@ var Card = {
             
             context2.drawImage(image7d, 215, 0, 64, 86);
             };
+            
+        } else if (Game.dealerCardCounter === 8) {
+            
+            var image8d = new Image();
+            image8d.src = "../pics/cards/"+ card + ".png";
+            image8d.onload = function() {
+            
+            context2.drawImage(image8d, 235, 0, 64, 86);
+            };
         }
+        
+        Game.dealerScore = Game.dealerScore + Score.recalculate(Deck.currentCard);  
+        Score.displayDealerScore();
     },
 };
 
@@ -723,21 +867,56 @@ var Card = {
 
 var Chip = {
     
+    textColor: "",
+    
+    blackjackAmount: 0,
+    
     displayChip: function() {
         
         var canvas3 = document.getElementById("playercards");
         var context3 = canvas3.getContext('2d');
+        var canvas6 = document.getElementById("dealercards");
+        var context6 = canvas6.getContext('2d');
         
         if(Game.playerScore > Game.dealerScore || Game.dealerScore > 21) {
             
             var imageChip = new Image();
-        
-            imageChip.src = "../pics/chips8.png";
-            imageChip.onload = function() {
             
-            context3.drawImage(imageChip, 9, 47, 32, 26);
+            setTimeout(function(){
+            
+                imageChip.src = "../pics/chips8.png";
+                imageChip.onload = function() {
+            
+                context3.drawImage(imageChip, 9, 47, 32, 26);
             };
-        
+            
+            context3.font = "bold 10px Futura, 'Trebuchet MS', Arial, sans-serif";
+            context3.fillStyle = Chip.textColor;
+            context3.fillText("$" + Game.playerBet, 9, 39);
+                    
+            },500); 
+            
+            if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
+            
+                Chip.blackjackAmount = Game.playerBet / 2;
+            
+                var imageChip3 = new Image();
+            
+                setTimeout(function(){
+            
+                    imageChip3.src = "../pics/chips2.png";
+                    imageChip3.onload = function() {
+            
+                    context3.drawImage(imageChip3, 0, 0, 60, 35);
+                };
+            
+                context6.font = "bold 10px Futura, 'Trebuchet MS', Arial, sans-serif";
+                context6.fillStyle = Chip.textColor;
+                context6.fillText("$" + Chip.blackjackAmount, 15, 90);
+                    
+                },500); 
+            }
+            
         } else {
             
             var imageChip2 = new Image();
@@ -747,18 +926,10 @@ var Chip = {
             
             context3.drawImage(imageChip2, 45, 54, 32, 26);
             };
-        }
-        
-        if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
             
-            var imageChip3 = new Image();
-        
-            imageChip3.src = "../pics/chips2.png";
-            imageChip3.onload = function() {
-            
-            context3.drawImage(imageChip3, 0, 8, 70, 45);
-            };
-            
+            context3.font = "bold 10px Futura, 'Trebuchet MS', Arial, sans-serif";
+            context3.fillStyle = Chip.textColor;
+            context3.fillText("$" + Game.playerBet, 45, 46);
         }
     },
 };
@@ -772,9 +943,74 @@ var Chip = {
 
 var Messages = {
     
+    textColor: "",
+    textColorP: "",
+    textColorD: "",
+    
     displayMessage: function(message) {
         
-        Game.messageText.innerHTML = message;
+        Game.tinyMessage.style.color = Messages.textColor;
+        Game.tinyMessage.innerHTML = message;
+        
+        setTimeout(function(){
+            
+            Game.tinyMessage.innerHTML = "";
+            
+        },1000);
+    },
+    
+    displayMessageP: function(message) {
+        
+        var canvas7 = document.getElementById("playercards");
+        var context7 = canvas7.getContext('2d');
+        
+        setTimeout(function(){
+            
+            context7.fillStyle = "black";
+            context7.fillRect(90, 20, 84, 30);
+            context7.font = "bold 24px Futura, 'Trebuchet MS', Arial, sans-serif";
+            context7.fillStyle = Messages.textColorP;
+            context7.fillText(message, 103, 44);
+                    
+        },500); 
+    },
+    
+    displayMessageD: function(message) {
+        
+        var canvas8 = document.getElementById("dealercards");
+        var context8 = canvas8.getContext('2d');
+        
+        setTimeout(function(){
+            
+            context8.fillStyle = "black";
+            context8.fillRect(90, 20, 84, 30);
+            context8.font = "bold 24px Futura, 'Trebuchet MS', Arial, sans-serif";
+            context8.fillStyle = Messages.textColorD;
+            context8.fillText(message, 103, 44);
+                    
+        },500); 
+    },
+    
+    displayMessageOther: function(message) {
+        
+        var canvas9 = document.getElementById("dealercards");
+        var context9 = canvas9.getContext('2d');
+        
+        setTimeout(function() {
+            
+            context9.fillStyle = "black";
+            context9.fillRect(0, 30, 90, 20);
+            context9.font = "bold 9px Verdana";
+            context9.fillStyle = "dodgerblue";
+            context9.fillText(message, 4, 44);
+        
+        },500);
+    
+        setTimeout(function(){
+            
+            context9.clearRect(0, 30, 90, 20);
+            
+        },1500); 
     },
 };
 
@@ -787,7 +1023,35 @@ var Messages = {
 
 
 
-
+var Strategy = {
+    
+    calculate: function() {
+        
+        
+        
+        // Uträkning av optimal strategi här!!
+        
+        
+                
+        var optimalDecision = "You should probably stand or hit on this one ;-)";
+        
+        if(Game.playerScore <= 21) {
+            
+            Game.strategyTips.innerHTML = "";
+            
+            setTimeout(function() {
+                
+                Game.strategyTips.innerHTML = optimalDecision;
+                
+            },500);
+        }
+        
+        else {
+            
+            Game.strategyTips.innerHTML = "";
+        }
+    },
+};
 
 
 
@@ -851,8 +1115,8 @@ var GameProgress = {
         
         localStorage.setItem('playerchips', Game.playerChips);
         
-        var saved = "Game saved";
-        Game.messageText.className = "win";
+        var saved = "SAVED!";
+        Messages.textColor = "chartreuse";
         Messages.displayMessage(saved);
     },
     
@@ -878,4 +1142,4 @@ var GameProgress = {
 
 
 
-window.onload = Game.init;
+window.onload = Game.init();
