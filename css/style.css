@@ -52,7 +52,7 @@ table {
 /* Min css-kod */
 
 body{
-	background-color: black;
+	background-color: #1b3d0b;
 	/* background-color: #1b3d0b; */
 }
 
@@ -64,8 +64,13 @@ body{
 	background: url("../pics/casinobackground.jpg");
 	background-size: cover;
 	border-width: 3px;
-	border-color: #1b2c3f;
+	border-color: black;
+	/*border-color: #1b2c3f;*/
 	border-style: solid;
+	-moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 header{
@@ -128,6 +133,7 @@ h1{
 	opacity: 0.8;
 	border-radius: 10px;
     border: 1px solid black;
+    cursor: pointer
 }
 
 #hitbutton{
@@ -142,10 +148,11 @@ h1{
 	opacity: 0.7;
 	border-radius: 10px;
     border: 1px solid black;
+    cursor: pointer
 }
 
 #standbutton{
-	margin-right: 20px;
+	margin-right: 0px;
 	margin-top: 6px;
 	width: 100px;
 	height: 30px;
@@ -157,33 +164,62 @@ h1{
 	opacity: 0.7;
 	border-radius: 10px;
     border: 1px solid black;
+    cursor: pointer
+}
+
+#doublebutton{
+	margin-right: 0px;
+	margin-top: 6px;
+	width: 35px;
+	height: 26px;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	opacity: 0.7;
+	border-radius: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+#betbutton:hover,#hitbutton:hover,#standbutton:hover,#doublebutton:hover{
+	-webkit-box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
+	-moz-box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
+	box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
+}
+
+#betbutton:focus,#hitbutton:focus,#standbutton:focus,#doublebutton:focus{
+	outline: none;
+}
+
+#betbutton:active,#hitbutton:active,#standbutton:active,#doublebutton:active{
+	border-color: white;
 }
 
 #chipcount{
-	margin-top: 72px;
+	margin-top: 74px;
 }
 
 #chips{
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
 	text-shadow: 3px 3px 3px black;
 	float: left;
-	margin-left: 205px;
+	margin-left: 212px;
 	border-radius: 10px;
-    border: 2px solid dodgerblue;
+    border: 1px solid dodgerblue;
     padding: 1px 3px;
     background-color: black;
 }
 
 .chipswin{
-	font-size: 28px;
+	font-size: 26px;
 	position: relative;
 	top: -130px;
-	/*right: -160px; */
 }
 
 .chipsnormal{
 	color: silver;
-	font-size: 28px;
+	font-size: 26px;
 }
 
 #betamount{
@@ -260,18 +296,49 @@ input[type=radio]:checked + label:before {
 
 footer{
 	width: 800px;
-	height: 22px;
+	height: 19px;
 	margin: 0 auto;
 	background-color: black;
 	text-align: center;
+	cursor: pointer;
+	overflow: hidden;
+	border-style: solid;
+	border-width: 3px 0px 0px 0px;
+	border-color: black;
 }
 
 #strategytips{
 	font-family: Verdana;
-	font-size: 12px;
-	color: dodgerblue;
-	padding-top: 6px;
+	font-size: 11px;
+	color: white;
+	padding-top: 3px;
+	position: relative;
+    -webkit-animation: mover 7s infinite; /* Chrome, Safari, Opera */
+    -webkit-animation-direction: normal; /* Chrome, Safari, Opera */
+    -webkit-animation-timing-function: linear;
+    animation: mover 7s infinite;
+    animation-direction: normal;
+    animation-timing-function: linear;
 }
+
+@-webkit-keyframes mover {
+    0%   {left: 120px;}
+    100%  {left: -120px;}
+}
+@keyframes mover {
+    0%   {left: 120px;}
+    100%  {left: -120px;}
+}
+
+
+
+
+
+
+
+
+
+
 
 #newgamebutton{
 	background-color: black;
@@ -284,6 +351,7 @@ footer{
     border: 2px solid dodgerblue;
     margin: 0 auto;
     margin-left: 5px;
+    cursor: pointer
 }
 
 #resumegamebutton{
@@ -297,6 +365,7 @@ footer{
 	border-radius: 20px;
     border: 2px solid yellow;
     margin: 0 auto;
+    cursor: pointer
 }
 
 #removebutton{
@@ -310,6 +379,7 @@ footer{
     margin: 0 auto;
     font-weight: bold;
     margin-left: 5px;
+    cursor: pointer
 }
 
 #savebutton{
@@ -323,24 +393,25 @@ footer{
 	float: left;
 	margin-left: 7px;
 	padding: 1px 1px;
-	margin-top: 8px;
+	margin-top: 7px;
+	cursor: pointer
 }
 
 #tinymessage{
 	font-family: Verdana;
 	font-size: 10px;
 	color: chartreuse;
-	margin-left: 5px;
+	margin-left: 4px;
 	font-style: italic;
 	float: left;
-	margin-top: 6px;
+	margin-top: 5px;
 	background-color: black;
-	padding: 5px 5px;
+	padding: 5px 3px;
 }
 
 #tutorial{
 	margin: 0 auto;
-	width: 450px;
+	width: 477px;
 	background-color: black;
 }
 
@@ -354,13 +425,19 @@ footer{
 }
 
 #tutorialbutton{
-	width: 120px;
+	width: 110px;
 	height: 20px;
-	margin-left: 166px;
+	margin-left: 334px;
 	background-color: white;
 	color: black;
 	font-family: Verdana;
 	font-weight: bold;
 	font-size: 10px;
-	margin-bottom: 7px;
+	cursor: pointer;
+	margin-top: 3px;
+	margin-bottom: 4px;
+}
+
+#preloader{
+	display: none;
 }

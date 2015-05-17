@@ -10,6 +10,7 @@ var Game = {
     betButton: document.getElementById("betbutton"),
     hitButton: document.getElementById("hitbutton"),
     standButton: document.getElementById("standbutton"),
+    doubleButton: document.getElementById("doublebutton"),
     chipCount: document.getElementById("chipcount"),
     chips: document.getElementById("chips"),
     betAmount: document.getElementById("betamount"),
@@ -19,6 +20,7 @@ var Game = {
     tinyMessage: document.getElementById("tinymessage"),
     saveButton: document.getElementById("savebutton"),
     strategyTips: document.getElementById("strategytips"),
+    toggleStrategy: document.getElementById("togglestrategy"),
 
     playerScore: 0,
     dealerScore: 0,
@@ -28,7 +30,7 @@ var Game = {
     dealerCardCounter: 0,
     playerHasAce: 0,
     dealerHasAce: 0,
-    strategyTipsIsOn: false,
+    playerHasDoubled: false,
 
     init: function() {
         
@@ -37,10 +39,13 @@ var Game = {
         Game.betButton.className = "inactive";
         Game.hitButton.className = "inactive";
         Game.standButton.className = "inactive";
+        Game.doubleButton.className = "inactive";
         Game.chipCount.className = "inactive";
         Game.betAmount.className = "inactive";
         Game.saveButton.className = "inactive";
         Game.chips.className = "chipsnormal";
+        Game.strategyTips.style.display = 'none';
+        
         
         var resumeGameButton = document.createElement("button");
         resumeGameButton.id = "resumegamebutton";
@@ -96,10 +101,27 @@ var Game = {
         Deck.createDeck();
         Deck.shuffleDeck();
         
-        Game.playerChips = 2000;
+        Game.playerChips = 15000;
         
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
+        
+        if(Game.playerChips <= 500) {
+    
+            Game.chips.style.borderColor = "red";
+            
+        } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
+                
+            Game.chips.style.borderColor = "chartreuse";
+                
+        } else if(Game.playerChips >= 10000) {
+                
+            Game.chips.style.borderColor = "gold";
+                
+        } else {
+                
+            Game.chips.style.borderColor = "dodgerblue";
+        }
         
         Table.showRadioButtons();
         Game.betButton.className = "active";
@@ -110,6 +132,20 @@ var Game = {
             Game.betButton.className = "inactive";
             Table.fadeRadiobuttons();
             Game.newRound();
+        };
+        
+        Game.toggleStrategy.onclick = function() {
+            
+            if(Game.strategyTips.style.display === 'none') {
+                
+                Game.strategyTips.style.display = 'block';
+                Game.toggleStrategy.style.backgroundColor = "#4c4c4c";
+                //#698fbf
+            } else {
+                
+                Game.strategyTips.style.display = 'none';
+                Game.toggleStrategy.style.backgroundColor = "black";
+            }
         };
     },
     
@@ -125,6 +161,23 @@ var Game = {
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
         
+        if(Game.playerChips <= 500) {
+    
+            Game.chips.style.borderColor = "red";
+            
+        } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
+                
+            Game.chips.style.borderColor = "chartreuse";
+                
+        } else if(Game.playerChips >= 10000) {
+                
+            Game.chips.style.borderColor = "gold";
+                
+        } else {
+                
+            Game.chips.style.borderColor = "dodgerblue";
+        }
+        
         Table.showRadioButtons();
         Game.betButton.className = "active";
         Game.betAmount.className = "active2";
@@ -135,6 +188,20 @@ var Game = {
             Table.fadeRadiobuttons();
             Game.newRound();
         };
+        
+        Game.toggleStrategy.onclick = function() {
+            
+            if(Game.strategyTips.style.display === 'none') {
+                
+                Game.strategyTips.style.display = 'block';
+                Game.toggleStrategy.style.backgroundColor = "#4c4c4c";
+                
+            } else {
+                
+                Game.strategyTips.style.display = 'none';
+                Game.toggleStrategy.style.backgroundColor = "black";
+            }
+        };
     },
     
     newRound: function() {
@@ -144,7 +211,7 @@ var Game = {
         if(Game.bet500.checked) {
             
             Game.playerBet = 500;
-            Chip.textColor = "#CC00CC";
+            Chip.textColor = "chartreuse";
             
             } else if(Game.bet1000.checked) {
             
@@ -154,8 +221,10 @@ var Game = {
             } else {
             
             Game.playerBet = 100;
-            Chip.textColor = "white";
+            Chip.textColor = "cyan";
         }
+        
+        Game.doubleButton.style.backgroundColor = Chip.textColor;
         
         if(Game.playerChips < Game.playerBet) {
             
@@ -169,6 +238,23 @@ var Game = {
             
             Game.playerChips -= Game.playerBet;
             Game.chips.innerHTML = "$" + Game.playerChips;
+            
+            if(Game.playerChips <= 500) {
+    
+                Game.chips.style.borderColor = "red";
+            
+            } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
+                
+                Game.chips.style.borderColor = "chartreuse";
+                
+            } else if(Game.playerChips >= 10000) {
+                
+                Game.chips.style.borderColor = "gold";
+                
+            } else {
+                
+                Game.chips.style.borderColor = "dodgerblue";
+            }
             
             Chip.displayChip();
         
@@ -201,6 +287,9 @@ var Game = {
                     
                     Game.hitButton.className = "active";
                     Game.standButton.className = "active";
+                    Game.doubleButton.className = "active";
+                    Game.doubleButton.disabled = false;
+                    Game.doubleButton.style.opacity = "1";
                 }
                     
             },2000); 
@@ -211,15 +300,23 @@ var Game = {
                 
                 Game.playerHits();
                 Strategy.calculate();
+                Game.doubleButton.disabled = true;
+                Game.doubleButton.style.opacity = "0.3";
             };
             
             Game.standButton.onclick = function () {
                 
                 Game.hitButton.className = "inactive";
                 Game.standButton.className = "inactive";
+                Game.doubleButton.className = "inactive";
                 Game.strategyTips.innerHTML = "";
                 
                 Game.dealerHits();
+            };
+            
+            Game.doubleButton.onclick = function () {
+                
+                Game.playerDoubles();
             };
         }
     },
@@ -248,6 +345,7 @@ var Game = {
                     
                     Game.hitButton.className = "inactive";
                     Game.standButton.className = "inactive";
+                    Game.doubleButton.className = "inactive";
                     Score.compare();
                 }
                         
@@ -255,6 +353,7 @@ var Game = {
                 
                 Game.hitButton.className = "inactive";
                 Game.standButton.className = "inactive";
+                Game.doubleButton.className = "inactive";
                 
                 Score.compare();
             }
@@ -316,9 +415,92 @@ var Game = {
         }, 500);
     },
     
+    playerDoubles: function() {
+        
+        if(Game.playerChips < Game.playerBet) {
+            
+            var noChips = "NOT ENOUGH CHIPS!";
+            Messages.textColor = "red";
+            Messages.displayMessage(noChips);
+            
+        } else {
+            
+            Game.hitButton.className = "inactive";
+            Game.standButton.className = "inactive";
+            Game.doubleButton.className = "inactive";
+            Game.strategyTips.innerHTML = "";
+            
+            Game.playerChips -= Game.playerBet;
+            Game.chips.innerHTML = "$" + Game.playerChips;
+            
+            if(Game.playerChips <= 500) {
+    
+                Game.chips.style.borderColor = "red";
+            
+            } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
+                
+                Game.chips.style.borderColor = "chartreuse";
+                
+            } else if(Game.playerChips >= 10000) {
+                
+                Game.chips.style.borderColor = "gold";
+                
+            } else {
+                
+                Game.chips.style.borderColor = "dodgerblue";
+            }
+            
+            Game.playerBet = Game.playerBet * 2;
+            Game.playerHasDoubled = true;
+            
+            Chip.displayDoubleChip();
+        
+            setTimeout(function(){
+                
+                Deck.drawCard();
+                Game.playerCardCounter += 1;
+                Card.displayPlayerCard(Deck.currentCard);
+        
+                if(Deck.currentCard.substring(1) === "1") {
+            
+                    Game.playerHasAce += 1;
+                }
+        
+                if(Game.playerScore > 21) {
+            
+                    // Kollar om det finns ett ess som kan göras om från 11 till 1.
+                    if(Game.playerHasAce > 0) {
+                            
+                        Game.playerScore -= 10;
+                        Score.displayPlayerScore();
+                        Game.playerHasAce -= 1;
+                
+                        if(Game.playerScore === 22) {
+                    
+                            Score.compare();
+                        
+                        } else {
+                            
+                            Game.dealerHits();
+                        }
+                        
+                    } else {
+                
+                        Score.compare();
+                    }
+                    
+                } else {
+                
+                    Game.dealerHits();
+                }
+                
+            },500);
+        }
+    },
+    
     roundIsOver: function() {
         
-         if(Messages.textColorP === "chartreuse" || Messages.textColorP === "magenta" || Messages.textColorP === "dodgerblue") {
+         if(Messages.textColorP === "chartreuse" || Messages.textColorP === "gold" || Messages.textColorP === "dodgerblue") {
        
             Game.chips.className = "chipswin";
             Game.chips.style.color = "silver";
@@ -329,6 +511,10 @@ var Game = {
                 var temp3 = document.getElementById("playercards");
                 temp3.getContext('2d').clearRect(0, 20, 80, 60);
                 
+                // Denna del rensar bort det lilla som annars blir kvar efter en dubbling.
+                var temp8 = document.getElementById("playercards");
+                temp8.getContext('2d').clearRect(62, 65, 32, 27);
+                
                 var temp5 = document.getElementById("playercards");
                 temp5.getContext('2d').clearRect(0, 0, 55, 60);
                 
@@ -338,6 +524,23 @@ var Game = {
                 Game.chips.style.fontWeight = "bold";
                 Game.chips.style.color = Chip.textColor;
                 Game.chips.innerHTML = "$" + Game.playerChips;
+                
+                if(Game.playerChips <= 500) {
+    
+                    Game.chips.style.borderColor = "red";
+            
+                } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
+                
+                    Game.chips.style.borderColor = "chartreuse";
+                
+                } else if(Game.playerChips >= 10000) {
+                
+                    Game.chips.style.borderColor = "gold";
+                
+                } else {
+                
+                    Game.chips.style.borderColor = "dodgerblue";
+                }
            
             },500);
         
@@ -348,6 +551,10 @@ var Game = {
                 // Rensar bort den första marken.
                 var temp4 = document.getElementById("playercards");
                 temp4.getContext('2d').clearRect(0, 20, 80, 60);
+                
+                // Denna del rensar bort det lilla som annars blir kvar efter en dubbling.
+                var temp7 = document.getElementById("playercards");
+                temp7.getContext('2d').clearRect(62, 65, 32, 27);
                 
             },500);
         } 
@@ -387,6 +594,7 @@ var Game = {
             Game.playerHasAce = 0;
             Game.dealerHasAce = 0;
             Messages.textColorP = "";
+            Game.playerHasDoubled = false;
             
             if(Game.playerChips < 100) {
                 
@@ -425,12 +633,12 @@ var Game = {
         
         var tutorialText = document.createElement("p");
         tutorialText.className = "tutorialtext";
-        tutorialText.innerHTML = "*Get a higher score than the dealer without getting over 21.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are all worth 10 points.<br />*Dealer must draw on 16 points and below.<br />*21 points made with only two cards beats 21 points with several. <br /><br />Have fun and good luck!";
+        tutorialText.innerHTML = "*Get a higher score than the dealer without exceeding 21 points.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are all worth 10 points.<br />*All cards from 2-9 are worth their specific number in points.<br />*Dealer must draw on 16 points and below.<br />*21 points gained with only two cards beats 21 points gained from several.";
         tutorial.appendChild(tutorialText);
         
         var tutorialButton = document.createElement("button");
         tutorialButton.id = "tutorialbutton";
-        tutorialButton.innerHTML = "START THE GAME";
+        tutorialButton.innerHTML = "SKIP TUTORIAL";
         tutorialText.appendChild(tutorialButton);
         
         tutorialButton.onclick = function() {
@@ -442,13 +650,13 @@ var Game = {
     
     gameOver: function() {
         
-        if (confirm("You ran out of chips! Try again?")) { 
+        if (confirm("You ran out of chips! Play again?")) { 
             
-            Game.newGame();
+            document.location.reload();
         
         } else {
             
-            Game.init();
+            document.location.reload();
         }
     },
 };
@@ -510,7 +718,7 @@ var Deck = {
             Deck.cards[i] = t;
         }
         
-        var shuffleMessage = "DECK SHUFFLED";
+        var shuffleMessage = "  SHUFFLING..";
         Messages.displayMessageOther(shuffleMessage);
     },
     
@@ -625,7 +833,7 @@ var Score = {
     
     blackJack: function() {
         
-        Messages.textColorP = "magenta";
+        Messages.textColorP = "gold";
         Messages.displayMessageP(Score.win);    
             
         Chip.displayChip();
@@ -716,7 +924,7 @@ var Card = {
             image2p.src = "../pics/cards/"+ card + ".png";
             image2p.onload = function() {
             
-            context.drawImage(image2p, 115, 6, 64, 86);
+            context.drawImage(image2p, 110, 6, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 3) {
@@ -725,7 +933,7 @@ var Card = {
             image3p.src = "../pics/cards/"+ card + ".png";
             image3p.onload = function() {
             
-            context.drawImage(image3p, 135, 4, 64, 86);
+            context.drawImage(image3p, 125, 4, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 4) {
@@ -734,7 +942,7 @@ var Card = {
             image4p.src = "../pics/cards/"+ card + ".png";
             image4p.onload = function() {
             
-            context.drawImage(image4p, 155, 2, 64, 86);
+            context.drawImage(image4p, 140, 2, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 5) {
@@ -743,7 +951,7 @@ var Card = {
             image5p.src = "../pics/cards/"+ card + ".png";
             image5p.onload = function() {
             
-            context.drawImage(image5p, 175, 0, 64, 86);
+            context.drawImage(image5p, 155, 0, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 6) {
@@ -752,7 +960,7 @@ var Card = {
             image6p.src = "../pics/cards/"+ card + ".png";
             image6p.onload = function() {
             
-            context.drawImage(image6p, 195, 0, 64, 86);
+            context.drawImage(image6p, 170, 0, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 7) {
@@ -761,7 +969,7 @@ var Card = {
             image7p.src = "../pics/cards/"+ card + ".png";
             image7p.onload = function() {
             
-            context.drawImage(image7p, 215, 0, 64, 86);
+            context.drawImage(image7p, 185, 0, 64, 86);
             };
             
         } else if (Game.playerCardCounter === 8) {
@@ -770,7 +978,7 @@ var Card = {
             image8p.src = "../pics/cards/"+ card + ".png";
             image8p.onload = function() {
             
-            context.drawImage(image8p, 235, 0, 64, 86);
+            context.drawImage(image8p, 200, 0, 64, 86);
             };
         }
         
@@ -798,7 +1006,7 @@ var Card = {
             image2d.src = "../pics/cards/"+ card + ".png";
             image2d.onload = function() {
             
-            context2.drawImage(image2d, 115, 6, 64, 86);
+            context2.drawImage(image2d, 110, 6, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 3) {
@@ -807,7 +1015,7 @@ var Card = {
             image3d.src = "../pics/cards/"+ card + ".png";
             image3d.onload = function() {
             
-            context2.drawImage(image3d, 135, 4, 64, 86);
+            context2.drawImage(image3d, 125, 4, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 4) {
@@ -816,7 +1024,7 @@ var Card = {
             image4d.src = "../pics/cards/"+ card + ".png";
             image4d.onload = function() {
             
-            context2.drawImage(image4d, 155, 2, 64, 86);
+            context2.drawImage(image4d, 140, 2, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 5) {
@@ -825,7 +1033,7 @@ var Card = {
             image5d.src = "../pics/cards/"+ card + ".png";
             image5d.onload = function() {
             
-            context2.drawImage(image5d, 175, 0, 64, 86);
+            context2.drawImage(image5d, 155, 0, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 6) {
@@ -834,7 +1042,7 @@ var Card = {
             image6d.src = "../pics/cards/"+ card + ".png";
             image6d.onload = function() {
             
-            context2.drawImage(image6d, 195, 0, 64, 86);
+            context2.drawImage(image6d, 170, 0, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 7) {
@@ -843,7 +1051,7 @@ var Card = {
             image7d.src = "../pics/cards/"+ card + ".png";
             image7d.onload = function() {
             
-            context2.drawImage(image7d, 215, 0, 64, 86);
+            context2.drawImage(image7d, 185, 0, 64, 86);
             };
             
         } else if (Game.dealerCardCounter === 8) {
@@ -852,7 +1060,7 @@ var Card = {
             image8d.src = "../pics/cards/"+ card + ".png";
             image8d.onload = function() {
             
-            context2.drawImage(image8d, 235, 0, 64, 86);
+            context2.drawImage(image8d, 200, 0, 64, 86);
             };
         }
         
@@ -917,6 +1125,20 @@ var Chip = {
                 },500); 
             }
             
+            if (Game.playerHasDoubled === true) {
+                
+                var imageChip5 = new Image();
+                
+                setTimeout(function(){
+                    
+                    imageChip5.src = "../pics/chips8.png";
+                    imageChip5.onload = function() {
+            
+                    context3.drawImage(imageChip5, 24, 60, 32, 26);
+                    };
+                },500); 
+            }
+            
         } else {
             
             var imageChip2 = new Image();
@@ -931,6 +1153,25 @@ var Chip = {
             context3.fillStyle = Chip.textColor;
             context3.fillText("$" + Game.playerBet, 45, 46);
         }
+    },
+    
+    displayDoubleChip: function() {
+        
+        var canvas10 = document.getElementById("playercards");
+        var context10 = canvas10.getContext('2d');
+        
+        var imageChip4 = new Image();
+        
+        imageChip4.src = "../pics/chips8.png";
+        imageChip4.onload = function() {
+            
+        context10.drawImage(imageChip4, 62, 66, 32, 26);
+        };
+        
+        context10.clearRect(45, 36, 32, 12);
+        context10.font = "bold 10px Futura, 'Trebuchet MS', Arial, sans-serif";
+        context10.fillStyle = Chip.textColor;
+        context10.fillText("$" + Game.playerBet, 45, 46);
     },
 };
 
@@ -967,10 +1208,10 @@ var Messages = {
         setTimeout(function(){
             
             context7.fillStyle = "black";
-            context7.fillRect(90, 20, 84, 30);
+            context7.fillRect(88, 20, 92, 30);
             context7.font = "bold 24px Futura, 'Trebuchet MS', Arial, sans-serif";
             context7.fillStyle = Messages.textColorP;
-            context7.fillText(message, 103, 44);
+            context7.fillText(message, 106, 44);
                     
         },500); 
     },
@@ -983,10 +1224,10 @@ var Messages = {
         setTimeout(function(){
             
             context8.fillStyle = "black";
-            context8.fillRect(90, 20, 84, 30);
+            context8.fillRect(88, 20, 92, 30);
             context8.font = "bold 24px Futura, 'Trebuchet MS', Arial, sans-serif";
             context8.fillStyle = Messages.textColorD;
-            context8.fillText(message, 103, 44);
+            context8.fillText(message, 106, 44);
                     
         },500); 
     },
@@ -998,17 +1239,17 @@ var Messages = {
         
         setTimeout(function() {
             
-            context9.fillStyle = "black";
-            context9.fillRect(0, 30, 90, 20);
+            context9.fillStyle = "#1b2c3f";
+            context9.fillRect(0, 30, 80, 20);
             context9.font = "bold 9px Verdana";
-            context9.fillStyle = "dodgerblue";
-            context9.fillText(message, 4, 44);
+            context9.fillStyle = "white";
+            context9.fillText(message, 0, 44);
         
         },500);
     
         setTimeout(function(){
             
-            context9.clearRect(0, 30, 90, 20);
+            context9.clearRect(0, 30, 80, 20);
             
         },1500); 
     },
@@ -1027,21 +1268,170 @@ var Strategy = {
     
     calculate: function() {
         
+        // Uträkningar för bästa strategi i varje situation.
         
+        var optimalDecision = "";
         
-        // Uträkning av optimal strategi här!!
-        
-        
+        if(Game.playerHasAce === 0) {
+            
+            // Hard hands - Händer som inte innehåller ess eller som räknar ess som 1.
+            
+            if(Game.playerScore >= 17) {
                 
-        var optimalDecision = "You should probably stand or hit on this one ;-)";
+                optimalDecision = "YOU SHOULD STAND.";
+            
+            } else if(Game.playerScore >= 5 && Game.playerScore < 12) {
+                
+                if(Game.playerScore === 8) {
+                    
+                    if(Game.dealerScore === 5 || Game.dealerScore === 6) {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                    
+                } else if(Game.playerScore === 9) {
+                    
+                    if(Game.dealerScore >= 2 && Game.dealerScore < 7) {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                    
+                } else if(Game.playerScore === 10) {
+                    
+                    if(Game.dealerScore === 10 || Game.dealerScore === 11) {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                    }
+                    
+                } else if(Game.playerScore === 11) {
+                    
+                    optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                
+                } else {
+                    
+                    optimalDecision = "YOU SHOULD HIT.";
+                }
+                
+            } else {
+                
+                if(Game.playerScore === 12) {
+                    
+                    if(Game.dealerScore >= 4 && Game.dealerScore < 7) {
+                        
+                        optimalDecision = "YOU SHOULD STAND.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                    
+                } else {
+                    
+                    if(Game.dealerScore >= 2 && Game.dealerScore < 7) {
+                        
+                        optimalDecision = "YOU SHOULD STAND.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                }
+            }
+            
+        } else {
+            
+            // Soft hands - Händer som räknar ess som 11.
+            
+            if(Game.playerScore >= 20) {
+                
+                optimalDecision = "YOU SHOULD STAND.";
+                
+            } else if(Game.playerScore >= 13 && Game.playerScore < 18) {
+                
+                if(Game.playerScore >= 13 && Game.playerScore < 17) {
+                    
+                    if(Game.dealerScore >= 4 && Game.dealerScore < 7) {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                    
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                
+                } else {
+                    
+                    if(Game.dealerScore >= 2 && Game.dealerScore < 7) {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE HIT.";
+                    
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                    }
+                }
+
+            } else {
+                
+                if(Game.playerScore === 18) {
+                    
+                    if(Game.dealerScore === 9 || Game.dealerScore === 10) {
+                        
+                        optimalDecision = "YOU SHOULD HIT.";
+                        
+                    } else {
+                        
+                        if(Game.dealerScore >= 3 && Game.dealerScore < 7) {
+                            
+                            optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE STAND.";
+                            
+                        } else {
+                            
+                            optimalDecision = "YOU SHOULD STAND.";
+                        }
+                    }
+                
+                } else {
+                    
+                    if(Game.dealerScore === 6) {
+                        
+                        optimalDecision = "YOU SHOULD DOUBLE IF POSSIBLE, OTHERWISE STAND.";
+                        
+                    } else {
+                        
+                        optimalDecision = "YOU SHOULD STAND.";
+                    }
+                }
+            }
+        }
         
-        if(Game.playerScore <= 21) {
+        if(Game.playerScore === 21 && Game.playerCardCounter === 2 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
             
             Game.strategyTips.innerHTML = "";
+            
+        } else if(Game.playerScore <= 21) {
+            
+            Game.strategyTips.innerHTML = "";
+            Game.strategyTips.style.webkitAnimation = 'none'; 
+            
+            // http://stackoverflow.com/questions/6268508/restart-animation-in-css3-any-better-way-than-removing-the-element
             
             setTimeout(function() {
                 
                 Game.strategyTips.innerHTML = optimalDecision;
+                Game.strategyTips.style.webkitAnimation = '';
                 
             },500);
         }
