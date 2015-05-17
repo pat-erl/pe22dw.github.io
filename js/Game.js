@@ -101,7 +101,7 @@ var Game = {
         Deck.createDeck();
         Deck.shuffleDeck();
         
-        Game.playerChips = 15000;
+        Game.playerChips = 2000;
         
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
