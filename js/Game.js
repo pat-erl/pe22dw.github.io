@@ -289,7 +289,7 @@ var Game = {
                     Game.standButton.className = "active";
                     Game.doubleButton.className = "active";
                     Game.doubleButton.disabled = false;
-                    Game.doubleButton.style.opacity = "1";
+                    Game.doubleButton.style.opacity = "0.7";
                 }
                     
             },2000); 
