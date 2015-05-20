@@ -60,8 +60,7 @@ body{
 	width: 800px;
 	margin: 0 auto;
 	margin-top: 50px;
-	background-color: silver;
-	background: url("../pics/casinobackground.jpg");
+	/* background: url("../pics/casinobackground.jpg"); */
 	background-size: cover;
 	border-width: 3px;
 	border-color: black;
@@ -71,6 +70,7 @@ body{
     -khtml-user-select: none;
     -webkit-user-select: none;
     user-select: none;
+    visibility: hidden;
 }
 
 header{
@@ -82,16 +82,31 @@ header{
 
 h1{
 	font-family: Verdana;
-	font-size: 12px;
+	font-size: 10px;
+	color: silver;
+	padding-top: 3px;
+	padding-bottom: 6px;
+}
+
+#loadingimage{
+	font-family: Verdana;
+	font-size: 10px;
 	color: white;
-	padding: 8px 8px;
+	font-weight: bold;
+	margin: 0 auto;
+	text-align: center;
+	position: relative;
+	top: 250px;
+}
+
+#loading{
+	margin-top: 10px;
 }
 
 #gamearea{
 	width: 800px;
 	height: 480px;
 	margin: 0 auto;
-	background-color: transparent;
 	background: url("../pics/blackjack5.jpg");
 	background-size: 814px;
 	background-repeat: no-repeat;
@@ -111,6 +126,36 @@ h1{
 	margin: 0 auto;
 	text-align: center;
 }
+
+#betamount{
+	text-align: center;
+	margin-left: 223px;
+	width: 400px;
+	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
+	font-size: 11px;
+	color: white;
+	margin-top: 8px;
+}
+
+#totalwin{
+	margin-top: 47px;
+}
+
+#chipcount{
+	margin-top: 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 #dealercards{
 	margin: 0 auto;
@@ -180,6 +225,7 @@ h1{
 	border-radius: 10px;
     border: 1px solid black;
     cursor: pointer;
+    background-color: white;
 }
 
 #betbutton:hover,#hitbutton:hover,#standbutton:hover,#doublebutton:hover{
@@ -196,10 +242,6 @@ h1{
 	border-color: white;
 }
 
-#chipcount{
-	margin-top: 74px;
-}
-
 #chips{
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
 	text-shadow: 3px 3px 3px black;
@@ -208,32 +250,35 @@ h1{
 	border-radius: 10px;
     border: 1px solid dodgerblue;
     padding: 1px 3px;
-    background-color: black;
+    font-size: 28px;
+    color: silver;
 }
 
-.chipswin{
-	font-size: 26px;
-	position: relative;
-	top: -130px;
+#totalwinamount{
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
+	text-shadow: 3px 3px 3px black;
+	margin-left: 212px;
+    font-size: 24px;
+    position: relative;
+    -webkit-animation: upwards 3s infinite; /* Chrome, Safari, Opera */
+    -webkit-animation-direction: normal; /* Chrome, Safari, Opera */
+    -webkit-animation-timing-function: linear;
+    animation: upwards 3s infinite;
+    animation-direction: normal;
+    animation-timing-function: linear;
+    color: chartreuse;
+    opacity: 0.4;
+    font-weight: bold;
 }
 
-.chipsnormal{
-	color: silver;
-	font-size: 26px;
+@-webkit-keyframes upwards {
+    0%   {top: -0px;}
+    100%  {top: -60px;}
 }
-
-#betamount{
-	text-align: center;
-	margin-left: 223px;
-	width: 400px;
-	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
-	font-size: 11px;
-	color: white;
-	margin-top: 8px;
+@keyframes upwards {
+    0%   {top: -0px;}
+    100%  {top: -60px;}
 }
-
-
-
 
 /* Styling av radioknappar från http://www.hongkiat.com/blog/css3-checkbox-radio/ */
 
@@ -382,21 +427,6 @@ footer{
     cursor: pointer
 }
 
-#savebutton{
-	font-size: 10px;
-	background-color: black;
-	border-width: 1px;
-	border-color: silver;
-	color: silver;
-	font-family: Verdana;
-	font-weight: bold;
-	float: left;
-	margin-left: 7px;
-	padding: 1px 1px;
-	margin-top: 7px;
-	cursor: pointer
-}
-
 #tinymessage{
 	font-family: Verdana;
 	font-size: 10px;
@@ -404,15 +434,15 @@ footer{
 	margin-left: 4px;
 	font-style: italic;
 	float: left;
-	margin-top: 5px;
+	margin-top: 11px;
 	background-color: black;
-	padding: 5px 3px;
 }
 
 #tutorial{
 	margin: 0 auto;
 	width: 477px;
 	background-color: black;
+	text-align: left;
 }
 
 .tutorialtext{
@@ -421,23 +451,28 @@ footer{
 	font-family: Verdana;
 	color: white;
 	font-size: 12px;
-	line-height: 140%;
+	line-height: 150%;
 }
 
 #tutorialbutton{
 	width: 110px;
 	height: 20px;
-	margin-left: 334px;
+	margin-left: 348px;
 	background-color: white;
 	color: black;
 	font-family: Verdana;
 	font-weight: bold;
 	font-size: 10px;
 	cursor: pointer;
-	margin-top: 3px;
-	margin-bottom: 4px;
+	margin-bottom: 10px;
 }
 
 #preloader{
 	display: none;
+}
+
+#audiodiv{
+	margin: 0 auto;
+	text-align: center;
+	margin-top: 20px;
 }

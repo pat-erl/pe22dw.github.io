@@ -7,9 +7,13 @@
     </head>
     
     <body>
+        <div id="loadingimage">
+                <img src="pics/loading.gif" alt="Dollar" height="50" width="50">
+                <p id="loading">LOADING...</p>
+            </div>
         <div id="container">
             <header>
-                <h1>Individuellt Mjukvaruutvecklingsprojekt - Blackjack!</h1>
+                <h1>Skapad av Patrik Erlandsson WP14 LNU</h1>
             </header>
             <div id="gamearea">
                 <div id="dealerarea">
@@ -38,9 +42,11 @@
                     <label for="bet1000">$1000</label>
                     </div>
                 </div>
+                <div id="totalwin">
+                    <p id="totalwinamount">+$0</p>
+                </div>
                 <div id="chipcount">
                     <p id="chips">$0</p>
-                    <button id="savebutton" type="button">SAVE</button>
                     <p id="tinymessage"></p>
                 </div>
             </div>
@@ -48,7 +54,7 @@
                 <p id="strategytips"></p>
             </footer>
         </div>
-        <script src="js/Game.js"></script>
+        
         <div id="preloader">
                 <img src="pics/cards/c1.png" width="64" height="86" />
                 <img src="pics/cards/c2.png" width="64" height="86" />
@@ -105,5 +111,16 @@
                 <img src="pics/chips8.png" width="32" height="26" />
                 <img src="pics/chips2.png" width="60" height="35" />
             </div>
+            
+        <script src="js/Game.js"></script>
+        <script src="js/Table.js"></script>
+        <script src="js/Card.js"></script>
+        <script src="js/Chip.js"></script>
+        <script src="js/Deck.js"></script>
+        <script src="js/GameProgress.js"></script>
+        <script src="js/Messages.js"></script>
+        <script src="js/Score.js"></script>
+        <script src="js/Sound.js"></script>
+        <script src="js/Strategy.js"></script>
     </body>
 </html>
