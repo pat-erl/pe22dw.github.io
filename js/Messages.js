@@ -10,6 +10,8 @@ var Messages = {
     
     displayMessage: function(message) {
         
+        Sound.loseStart();
+        
         Game.tinyMessage.style.color = Messages.textColor;
         Game.tinyMessage.innerHTML = message;
         

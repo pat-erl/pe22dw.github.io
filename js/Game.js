@@ -25,6 +25,13 @@ var Game = {
     loading: document.getElementById("loading"),
     totalWin: document.getElementById("totalwin"),
     totalWinAmountP: document.getElementById("totalwinamount"),
+    extraButtons: document.getElementById("extrabuttons"),
+    back: document.getElementById("back"),
+    backButton: document.getElementById("backbutton"),
+    strategyButton: document.getElementById("strategybutton"),
+    tutorialDiv: document.getElementById("tutorialdiv"),
+    tutorialText: document.getElementById("tutorialtext"),
+    nextButton: document.getElementById("nextbutton"),
 
     playerScore: 0,
     dealerScore: 0,
@@ -39,13 +46,15 @@ var Game = {
 
     init: function() {
         
+        Sound.ambianceStart();
+        
+        // Döljer "loading" meddelandet, inititerar spelet och visar huvudmenyn.
+        
         Game.loadingImage.className = "inactive";
         Game.loading.className = "inactive";
         Game.container.style.visibility = "visible";
         
         Table.fadeTable();
-        
-        Sound.ambianceStart();
     
         Game.betButton.className = "inactive";
         Game.hitButton.className = "inactive";
@@ -53,93 +62,163 @@ var Game = {
         Game.doubleButton.className = "inactive";
         Game.chipCount.className = "inactive";
         Game.betAmount.className = "inactive";
+        Game.toggleStrategy.className = "inactive";
+        Game.back.className = "inactive";
         
         Game.totalWin.style.visibility = "hidden";
         
-        Game.strategyTips.style.display = 'none';
+        Game.tutorialDiv.className = "inactive";
+        Game.nextButton.style.backgroundColor = "green";
         
         //Här kan det skapas en logo sedan!
         
         Game.playerChips = localStorage.getItem('playerchips');
         
+        var tutButton = document.createElement("button");
+        tutButton.id = "tutbutton";
+        tutButton.innerHTML = "HOW TO PLAY";
+        
         var resumeGameButton = document.createElement("button");
         resumeGameButton.id = "resumegamebutton";
         resumeGameButton.innerHTML = "RESUME GAME ($" + Game.playerChips + ")";
         
-        var removeButton = document.createElement("button");
-        removeButton.id = "removebutton";    
-        removeButton.innerHTML = "RESET";
-        
-        if (localStorage.getItem("playerchips") !== null) {
+        if (localStorage.getItem("playerchips") !== null && Game.playerChips >= 100) {
             
             document.getElementById("playerbuttons").appendChild(resumeGameButton);
-            
-            document.getElementById("playerbuttons").appendChild(removeButton);
             
             resumeGameButton.onclick = function () {
                 
                 Sound.clickStart();
                 resumeGameButton.className = "inactive";
                 newGameButton.className = "inactive";
-                removeButton.className = "inactive";
-                Game.resumeGame();
-            };
-            
-            removeButton.onclick = function () {
-                
-                Sound.clickStart();
-                localStorage.removeItem('playerchips');
-                document.location.reload();
+                Game.extraButtons.className = "inactive";
+                Sound.welcomebackStart();
+                GameProgress.load();
+                Game.newGame();
             };
         } 
         
         var newGameButton = document.createElement("button");
         newGameButton.id = "newgamebutton";
-        newGameButton.innerHTML = "NEW GAME ($2000)";
+        newGameButton.innerHTML = "NEW GAME";
         
         document.getElementById("playerbuttons").appendChild(newGameButton);
+        
+        var sizeButton1 = document.createElement("button");
+        sizeButton1.id = "sizebutton1";
+        sizeButton1.innerHTML = "NORMAL VIEW";
+        
+        document.getElementById("extrabuttons").appendChild(sizeButton1);
+        
+        var sizeButton2 = document.createElement("button");
+        sizeButton2.id = "sizebutton2";
+        sizeButton2.innerHTML = "LARGE VIEW";
+        
+        document.getElementById("extrabuttons").appendChild(sizeButton2);
+        
+        document.getElementById("extrabuttons").appendChild(tutButton);
+        
         
         newGameButton.onclick = function () {
             
             Sound.clickStart();
-            newGameButton.className = "inactive";
-            resumeGameButton.className = "inactive";
-            removeButton.className = "inactive";
-            Game.tutorial();
+            
+            if(localStorage.getItem("playerchips") !== null && Game.playerChips >= 100) {
+                
+                if (confirm("You have an existing game! Proceed anyway?")) { 
+                    
+                    newGameButton.className = "inactive";
+                    resumeGameButton.className = "inactive";
+                    Game.extraButtons.className = "inactive";
+                    Game.playerChips = 2000;
+                    GameProgress.save();
+                    Game.newGame();
+                }
+                
+            } else {
+                    
+                newGameButton.className = "inactive";
+                resumeGameButton.className = "inactive";
+                Game.extraButtons.className = "inactive";
+                Game.playerChips = 2000;
+                GameProgress.save();
+                Game.newGame();
+            } 
+        };
+        
+        sizeButton1.onclick = function () {
+            
+            Sound.clickStart();
+            
+            document.getElementById("mybody").style.zoom = "1";
+            document.getElementById("container").style.marginTop = "80px";
+        };
+        
+        sizeButton2.onclick = function () {
+            
+            Sound.clickStart();
+            
+            document.getElementById("mybody").style.zoom = "1.2";
+            document.getElementById("container").style.marginTop = "40px";
+        };
+        
+        tutButton.onclick = function () {
+            
+            Sound.clickStart();
+            
+            if(Game.tutorialDiv.className === "inactive") {
+                
+                newGameButton.className = "inactive";
+                resumeGameButton.className = "inactive";
+                Game.tutorialDiv.className = "active2";
+                tutButton.style.backgroundColor = "red";
+                Game.tutorialText.innerHTML = "This is blackjack played with only one deck of cards.<br /><br />The rules are pretty simple:<br />*Get a higher score than the dealer without exceeding 21 points.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are worth 10 points.<br />*All cards from 2-9 are worth their specific value in points.<br />*Dealer must stand on 17 points.<br />*21 points with two cards (a blackjack) beats 21 regular points.";
+                Game.nextButton.innerHTML = "NEXT";
+                Game.nextButton.style.backgroundColor = "green";
+                
+            } else {
+                
+                newGameButton.className = "active";
+                resumeGameButton.className = "active";
+                Game.tutorialDiv.className = "inactive";
+                tutButton.style.backgroundColor = "green";
+            }
+        };
+        
+        Game.nextButton.onclick = function() {
+            
+            Sound.clickStart();
+            
+            if(Game.nextButton.style.backgroundColor === "green") {
+                
+                Game.tutorialText.innerHTML = "*The player may choose to stand, hit or double.<br />*Double is available on the first two cards and gives ONE more card.<br />*Winning hands pays out 2:1.<br />*Tied hands returns the betamount.<br />*Blackjack pays out 2.5:1.<br />*If the dealer has blackjack as well, it counts as a tie.";
+                Game.nextButton.innerHTML = "PREVIOUS";
+                Game.nextButton.style.backgroundColor = "red";
+                
+            } else {
+                
+                Game.tutorialText.innerHTML = "*Get a higher score than the dealer without exceeding 21 points.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are worth 10 points.<br />*All cards from 2-9 are worth their specific value in points.<br />*Dealer must stand on 17 points.<br />*21 points with two cards (a blackjack) beats 21 regular points.";
+                Game.nextButton.innerHTML = "NEXT";
+                Game.nextButton.style.backgroundColor = "green";
+            }
         };
     },
-    
-    
-     // New game och resumegame borde gå att slå ihop på något sätt! om resumegame anropasnewgame men med med pareameter om resumegame, det som skiljer är markerantalet!
      
     newGame: function() {
         
+        // Startar ett nytt spel.
+        
         Table.showTable();
         
         Deck.createDeck();
         Deck.shuffleDeck();
         
-        Game.playerChips = 2000;
+        Game.back.className = "active2";
         
         Game.chips.innerHTML = "$" + Game.playerChips;
         Game.chipCount.className = "active2";
         
-        if(Game.playerChips <= 500) {
-    
-            Game.chips.style.borderColor = "red";
-            
-        } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
-                
-            Game.chips.style.borderColor = "chartreuse";
-                
-        } else if(Game.playerChips >= 10000) {
-                
-            Game.chips.style.borderColor = "gold";
-                
-        } else {
-                
-            Game.chips.style.borderColor = "dodgerblue";
-        }
+        Game.statusColor();
         
         Table.showRadioButtons();
         Game.betButton.className = "active";
@@ -152,79 +231,27 @@ var Game = {
             Game.newRound();
         };
         
-        Game.toggleStrategy.onclick = function() {
+        Game.strategyButton.onclick = function() {
             
             Sound.clickStart();
             
-            if(Game.strategyTips.style.display === 'none') {
+            if(Game.toggleStrategy.className === "inactive") {
                 
-                Game.strategyTips.style.display = 'block';
-                Game.toggleStrategy.style.backgroundColor = "#4c4c4c";
-                //#698fbf
+                Game.toggleStrategy.className = "active2";
+                Game.strategyButton.style.backgroundColor = "red";
+                
             } else {
-                
-                Game.strategyTips.style.display = 'none';
-                Game.toggleStrategy.style.backgroundColor = "black";
+        
+                Game.toggleStrategy.className = "inactive";
+                Game.strategyButton.style.backgroundColor = "green";
             }
         };
-    },
-    
-    resumeGame: function() {
         
-        Sound.welcomebackStart();
-        
-        Table.showTable();
-        
-        Deck.createDeck();
-        Deck.shuffleDeck();
-        
-        GameProgress.load();
-        
-        Game.chips.innerHTML = "$" + Game.playerChips;
-        Game.chipCount.className = "active2";
-        
-        if(Game.playerChips <= 500) {
-    
-            Game.chips.style.borderColor = "red";
-            
-        } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
-                
-            Game.chips.style.borderColor = "chartreuse";
-                
-        } else if(Game.playerChips >= 10000) {
-                
-            Game.chips.style.borderColor = "gold";
-                
-        } else {
-                
-            Game.chips.style.borderColor = "dodgerblue";
-        }
-        
-        Table.showRadioButtons();
-        Game.betButton.className = "active";
-        Game.betAmount.className = "active2";
-        
-        Game.betButton.onclick = function () {
-            
-            Game.betButton.className = "inactive";
-            Table.fadeRadiobuttons();
-            Game.newRound();
-        };
-        
-        Game.toggleStrategy.onclick = function() {
+        Game.backButton.onclick = function() {
             
             Sound.clickStart();
             
-            if(Game.strategyTips.style.display === 'none') {
-                
-                Game.strategyTips.style.display = 'block';
-                Game.toggleStrategy.style.backgroundColor = "#4c4c4c";
-                
-            } else {
-                
-                Game.strategyTips.style.display = 'none';
-                Game.toggleStrategy.style.backgroundColor = "black";
-            }
+            document.location.reload();
         };
     },
     
@@ -245,7 +272,7 @@ var Game = {
             } else {
             
             Game.playerBet = 100;
-            Chip.textColor = "cyan";
+            Chip.textColor = "dodgerblue";
         }
         
         if(Game.playerChips < Game.playerBet) {
@@ -261,33 +288,15 @@ var Game = {
             Game.playerChips -= Game.playerBet;
             Game.chips.innerHTML = "$" + Game.playerChips;
             
-            if(Game.playerChips <= 500) {
-    
-                Game.chips.style.borderColor = "red";
+            GameProgress.save();
             
-            } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
-                
-                Game.chips.style.borderColor = "chartreuse";
-                
-            } else if(Game.playerChips >= 10000) {
-                
-                Game.chips.style.borderColor = "gold";
-                
-            } else {
-                
-                Game.chips.style.borderColor = "dodgerblue";
-            }
+            Game.statusColor();
             
             Chip.displayChip();
         
             setTimeout(function(){
                 
                 Game.playerHits();
-                        
-            },500); 
-            
-            setTimeout(function(){
-                        
                 Game.dealerHits();
                         
             },500); 
@@ -311,7 +320,8 @@ var Game = {
                     Game.standButton.className = "active";
                     Game.doubleButton.className = "active";
                     Game.doubleButton.disabled = false;
-                    Game.doubleButton.style.color = "black";
+                    Game.doubleButton.style.backgroundColor = Chip.textColor;
+                    Game.doubleButton.style.opacity = 0.7;
                 }
                     
             },2000); 
@@ -323,7 +333,7 @@ var Game = {
                 Game.playerHits();
                 Strategy.calculate();
                 Game.doubleButton.disabled = true;
-                Game.doubleButton.style.color = "grey";
+                Game.doubleButton.style.opacity = 0.3;
             };
             
             Game.standButton.onclick = function () {
@@ -456,22 +466,7 @@ var Game = {
             Game.playerChips -= Game.playerBet;
             Game.chips.innerHTML = "$" + Game.playerChips;
             
-            if(Game.playerChips <= 500) {
-    
-                Game.chips.style.borderColor = "red";
-            
-            } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
-                
-                Game.chips.style.borderColor = "chartreuse";
-                
-            } else if(Game.playerChips >= 10000) {
-                
-                Game.chips.style.borderColor = "gold";
-                
-            } else {
-                
-                Game.chips.style.borderColor = "dodgerblue";
-            }
+            Game.statusColor();
             
             Game.playerBet = Game.playerBet * 2;
             Game.playerHasDoubled = true;
@@ -523,7 +518,9 @@ var Game = {
     
     roundIsOver: function() {
         
-         if(Messages.textColorP === "chartreuse" || Messages.textColorP === "gold" || Messages.textColorP === "dodgerblue") {
+        // Rensar canvas, nollställer variabler och sparar antalet marker i localstorage.
+        
+        if(Messages.textColorP === "chartreuse" || Messages.textColorP === "gold" || Messages.textColorP === "dodgerblue") {
        
             setTimeout(function() {
                 
@@ -557,25 +554,13 @@ var Game = {
                     Game.totalWinAmountP.innerHTML = "+$" + Game.totalWinAmount;
                 
                     Game.totalWinAmountP.style.webkitAnimation = '';
+                    
+                    Game.chips.style.fontWeight = "normal";
+                    Game.chips.style.color = "silver";
                 
-                },500);
+                },400);
                 
-                if(Game.playerChips <= 500) {
-    
-                    Game.chips.style.borderColor = "red";
-            
-                } else if(Game.playerChips >= 5000 && Game.playerChips < 10000) {
-                
-                    Game.chips.style.borderColor = "chartreuse";
-                
-                } else if(Game.playerChips >= 10000) {
-                
-                    Game.chips.style.borderColor = "gold";
-                
-                } else {
-                
-                    Game.chips.style.borderColor = "dodgerblue";
-                }
+                Game.statusColor();
            
             },500);
         
@@ -606,9 +591,6 @@ var Game = {
         
             var temp2 = document.getElementById("dealercards");
             temp2.getContext('2d').clearRect(0, 0, temp2.width, temp2.height);
-            
-            Game.chips.style.fontWeight = "normal";
-            Game.chips.style.color = "silver";
             
         },1000);
         
@@ -660,31 +642,7 @@ var Game = {
             
             Game.totalWin.style.visibility = "hidden";
             
-        },3000);
-    },
-    
-    tutorial: function() {
-        
-        var tutorial = document.createElement("div");
-        tutorial.id = "tutorial";
-        document.getElementById("playerbuttons").appendChild(tutorial);
-        
-        var tutorialText = document.createElement("p");
-        tutorialText.className = "tutorialtext";
-        tutorialText.innerHTML = "*Get a higher score than the dealer without exceeding 21 points.<br />*Aces are worth 11 or 1 points.<br />*Kings, queens, jacks and tens are all worth 10 points.<br />*All cards from 2-9 are worth their specific number in points.<br />*Dealer must draw on 16 points and below.<br />*21 points gained with only two cards (a blackjack) beats 21 regular points.<br />*Winning hand pays out 2:1.<br />*Blackjack pays out 2.5:1.";
-        tutorial.appendChild(tutorialText);
-        
-        var tutorialButton = document.createElement("button");
-        tutorialButton.id = "tutorialbutton";
-        tutorialButton.innerHTML = "SKIP TUTORIAL";
-        tutorialText.appendChild(tutorialButton);
-        
-        tutorialButton.onclick = function() {
-            
-            Sound.clickStart();
-            tutorial.className = "inactive";
-            Game.newGame();
-        };
+        },2000);
     },
     
     gameOver: function() {
@@ -698,6 +656,26 @@ var Game = {
             
             localStorage.removeItem('playerchips');
             document.location.reload();
+        }
+    },
+    
+    statusColor: function() {
+        
+        if(Game.playerChips <= 500) {
+    
+            Game.chips.style.borderColor = "red";
+            
+        } else if(Game.playerChips >= 10000 && Game.playerChips < 20000) {
+                
+            Game.chips.style.borderColor = "chartreuse";
+                
+        } else if(Game.playerChips >= 20000) {
+                
+            Game.chips.style.borderColor = "gold";
+                
+        } else {
+                
+            Game.chips.style.borderColor = "dodgerblue";
         }
     },
 };

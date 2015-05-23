@@ -6,10 +6,10 @@
      	<link rel="stylesheet" href="css/style.css" />
     </head>
     
-    <body>
+    <body id="mybody">
         <div id="loadingimage">
-                <img src="pics/loading.gif" alt="Dollar" height="50" width="50">
-                <p id="loading">LOADING...</p>
+                <img src="pics/loading.gif" alt="loading" height="50" width="50">
+                <p id="loading">LOADING MENU..</p>
             </div>
         <div id="container">
             <header>
@@ -20,6 +20,11 @@
                     <canvas id="dealercards" width="260" height="100">
                         
                     </canvas>
+                    <div id ="tutorialdiv">
+                        <p id ="tutorialtext"></p>
+                        <button id="closebutton" type="button">CLOSE</button>
+                        <button id="nextbutton" type="button">NEXT</button>
+                    </div>
                 </div>
                 <div id="playerarea">
                     <canvas id="playercards" width="260" height="100">
@@ -28,19 +33,17 @@
                     <div id="playerbuttons">
                         <button id="betbutton" type="button">PLACE BET</button>
                         <button id="standbutton" type="button">STAND</button>
-                        <button id="doublebutton" type="button">x 2</button>
+                        <button id="doublebutton" type="button"> x 2 </button>
                         <button id="hitbutton" type="button">HIT</button>
                     </div>
                 </div>
                 <div id="betamount">
-                    <div class="radio">
                     <input id="bet100" type="radio" name="betamount" value="100" checked>
                     <label for="bet100">$100</label>
                     <input id="bet500" type="radio" name="betamount" value="500">
                     <label for="bet500">$500</label>
                     <input id="bet1000" type="radio" name="betamount" value="1000">
                     <label for="bet1000">$1000</label>
-                    </div>
                 </div>
                 <div id="totalwin">
                     <p id="totalwinamount">+$0</p>
@@ -50,11 +53,17 @@
                     <p id="tinymessage"></p>
                 </div>
             </div>
-            <footer id="togglestrategy">
+            <div id="back">
+                <button id="backbutton" type="button">MAIN MENU</button>
+                <button id="strategybutton" type="button">STRATEGY</button>
+            </div>
+            <div id="togglestrategy">
                 <p id="strategytips"></p>
-            </footer>
+            </div>
+            <div id="extrabuttons">
+                
+            </div>
         </div>
-        
         <div id="preloader">
                 <img src="pics/cards/c1.png" width="64" height="86" />
                 <img src="pics/cards/c2.png" width="64" height="86" />
@@ -110,9 +119,21 @@
                 <img src="pics/cards/s13.png" width="64" height="86" />
                 <img src="pics/chips8.png" width="32" height="26" />
                 <img src="pics/chips2.png" width="60" height="35" />
+                <audio src="audio/ambiance/casino.mp3" preload="auto"></audio>
+                <audio src="audio/soundeffects/shuffle2.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/pokerchips.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/cardflip2.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/click2.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/success.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/win3.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/win2.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/win.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/cashregister2.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/welcomeback.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/lose3.wav" preload="auto"></audio>
+                <audio src="audio/soundeffects/swipe.wav" preload="auto"> </audio>
+                <audio src="audio/soundeffects/highclick.wav" preload="auto"></audio>
             </div>
-            
-        <script src="js/Game.js"></script>
         <script src="js/Table.js"></script>
         <script src="js/Card.js"></script>
         <script src="js/Chip.js"></script>
@@ -122,5 +143,6 @@
         <script src="js/Score.js"></script>
         <script src="js/Sound.js"></script>
         <script src="js/Strategy.js"></script>
+        <script src="js/Game.js"></script>
     </body>
 </html>

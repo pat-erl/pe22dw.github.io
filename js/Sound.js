@@ -15,10 +15,10 @@ var Sound = {
     welcomeback: new Audio('../audio/soundeffects/welcomeback.wav'),
     lose: new Audio('../audio/soundeffects/lose3.wav'),
     swipe: new Audio('../audio/soundeffects/swipe.wav'),
+    outofchips: new Audio("../audio/soundeffects/highclick.wav"),
     
     ambianceStart: function() {
         
-        Sound.ambiance.load();
         Sound.ambiance.volume = 0.1;
         Sound.ambiance.loop = true;
         Sound.ambiance.play();
@@ -44,14 +44,12 @@ var Sound = {
     
     chipStart: function() {
         
-        Sound.chip.load();
-        Sound.chip.volume = 0.3;
+        Sound.chip.volume = 0.4;
         Sound.chip.play();
     },
     
     cardStart: function() {
         
-        Sound.card.load();
         Sound.card.volume = 0.3;
         Sound.card.currentTime = "0.5";
         Sound.card.play();
@@ -59,64 +57,61 @@ var Sound = {
     
     clickStart: function() {
         
-        Sound.click.load();
         Sound.click.volume = 0.3;
         Sound.click.play();  
     },
     
     winStart: function() {
         
-        Sound.win.load();
         Sound.win.volume = 0.2;
         Sound.win.play();  
     },
     
     doublewinStart: function() {
         
-        Sound.doublewin.load();
         Sound.doublewin.volume = 0.2;
         Sound.doublewin.play();
     },
     
     blackjackStart: function() {
         
-        Sound.blackjack.load();
-        Sound.blackjack.volume = 0.1;
+        Sound.blackjack.volume = 0.2;
         Sound.blackjack.play();
     },
     
     tieStart: function() {
         
-        Sound.tie.load();
         Sound.tie.volume = 0.3;
         Sound.tie.play();
     },
     
     cashingStart: function() {
         
-        Sound.cashing.load();
         Sound.cashing.volume = 0.1;
         Sound.cashing.play();
     },
     
     welcomebackStart: function() {
         
-        Sound.welcomeback.load();
         Sound.welcomeback.play();
     },
     
     loseStart: function() {
         
-        Sound.lose.load();
         Sound.lose.volume = 0.3;
         Sound.lose.play();  
     },
     
     swipeStart: function() {
         
-        Sound.swipe.load();
         Sound.swipe.volume = 0.3;
         Sound.swipe.currentTime = "0.2";
         Sound.swipe.play();  
+    },
+    
+    outofchipsStart: function() {
+        
+        Sound.outofchips.volume = 0.3;
+        Sound.outofchips.play();
     },
 };

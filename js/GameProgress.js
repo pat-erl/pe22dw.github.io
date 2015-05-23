@@ -13,4 +13,9 @@ var GameProgress = {
         
         Game.playerChips = localStorage.getItem('playerchips');
     },
+    
+    erase: function() {
+        
+        localStorage.removeItem("playerchips");  
+    },
 };

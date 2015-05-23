@@ -6,7 +6,7 @@ var Table = {
     
     fadeTable: function() {
         
-        Game.gameArea.style.opacity = "0.6";
+        Game.gameArea.style.opacity = "0.8";
     },
     
     showTable: function() {
