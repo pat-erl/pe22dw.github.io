@@ -80,7 +80,7 @@ body{
 	/* background: url("../pics/casinobackground.jpg"); */
 	background-size: cover;
 	border-width: 3px;
-	border-color: #153649;
+	border-color: #19303d;
 	/* border-color: #1b2c3f; */
 	border-style: solid;
 	-moz-user-select: none;
@@ -152,7 +152,6 @@ h1{
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
-	opacity: 0.8;
 	border-radius: 10px;
     border: 1px solid black;
     cursor: pointer
@@ -167,7 +166,6 @@ h1{
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
-	opacity: 0.8;
 	border-radius: 10px;
     border: 1px solid black;
     cursor: pointer
@@ -183,7 +181,6 @@ h1{
 	font-size: 14px;
 	font-weight: bold;
 	color: black;
-	opacity: 0.8;
 	border-radius: 10px;
     border: 1px solid black;
     cursor: pointer
@@ -196,13 +193,11 @@ h1{
 	height: 26px;
 	font-family: Rockwell, 'Courier Bold', Courier, Georgia, Times, 'Times New Roman', serif;
 	font-size: 14px;
-	font-weight: bold;
-	color: black;
-	opacity: 0.8;
 	border-radius: 10px;
     border: 1px solid black;
     cursor: pointer;
-    background-color: white;
+    font-weight: bold;
+    color: black;
 }
 
 #betbutton:hover,#hitbutton:hover,#standbutton:hover,#doublebutton:hover{
@@ -220,22 +215,60 @@ h1{
 }
 
 #betamount{
+	margin-top: 5px;
 	text-align: center;
-	margin-left: 220px;
+	margin-left: 230px;
 	width: 400px;
 	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
-	font-size: 12px;
 	color: white;
 	font-weight: bold;
 }
 
-#bet100,#bet500,#bet1000{
-	cursor: pointer;
-	size: 50px;
+/* http://www.hongkiat.com/blog/css3-checkbox-radio/ */
+label{
+	display: inline-block;
+    cursor: pointer;
+    position: relative;
+    padding-left: 25px;
+    margin-right: 15px;
+    font-size: 12px;
 }
 
+input[type=radio] {
+    display: none;
+}
+
+label:before {
+    content: "";
+    display: inline-block;
+ 
+    width: 16px;
+    height: 16px;
+ 
+    margin-right: 10px;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    background-color: #19303d;
+    box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, .3), 0px 1px 0px 0px rgba(255, 255, 255, .8);
+}
+
+.radio label:before {
+    border-radius: 8px;
+}
+
+input[type=radio]:checked + label:before {
+    content: "\2022";
+    color: #d8b155;
+    font-size: 30px;
+    text-align: center;
+    line-height: 14px;
+}
+
+
+
 #totalwin{
-	margin-top: 43px;
+	margin-top: 40px;
 }
 
 #totalwinamount{
@@ -250,9 +283,8 @@ h1{
     animation: upwards 3s infinite;
     animation-direction: normal;
     animation-timing-function: linear;
-    color: chartreuse;
-    opacity: 0.5;
     font-weight: bold;
+    opacity: 0.7;
 }
 
 @-webkit-keyframes upwards {
@@ -277,17 +309,17 @@ h1{
     border: 2px solid dodgerblue;
     padding: 1px 3px;
     font-size: 30px;
-    color: silver;
+    color: white;
 }
 
 #tinymessage{
 	font-family: Verdana;
 	font-size: 10px;
 	color: chartreuse;
-	margin-left: 4px;
+	margin-left: 10px;
 	font-style: italic;
 	float: left;
-	margin-top: 11px;
+	margin-top: 12px;
 	background-color: black;
 }
 
@@ -308,7 +340,6 @@ h1{
     border: 1px solid silver;
     cursor: pointer;
     margin-left: 10px;
-    opacity: 0.8;
 }
 
 #strategybutton{
@@ -323,14 +354,13 @@ h1{
     border: 1px solid white;
     cursor: pointer;
     margin-left: 6px;
-    opacity: 0.8;
 }
 
 #togglestrategy{
 	width: 800px;
 	height: 16px;
 	margin: 0 auto;
-	background-color: #3d485f;
+	background-color: #2b2b2b;
 	text-align: center;
 	overflow: hidden;
 	border-style: solid;
@@ -339,8 +369,8 @@ h1{
 }
 
 #strategytips{
-	padding-top: 2px;
-	font-family: Verdana;
+	padding-top: 3px;
+	font-family: Futura, 'Trebuchet MS', Arial, sans-serif;
 	font-size: 12px;
 	color: white;
 	position: relative;
@@ -398,7 +428,7 @@ h1{
 	font-weight: bold;
 	font-size: 12px;
 	border-radius: 20px;
-    border: 2px solid yellow;
+    border: 2px solid chartreuse;
     margin: 0 auto;
     cursor: pointer;
 }
@@ -411,7 +441,7 @@ h1{
 	opacity: 0.6;
 }
 
-#sizebutton1,#sizebutton2{
+#sizebutton1{
 	margin-top: 7px;
 	margin-bottom: 7px;
 	background-color: black;
@@ -422,7 +452,21 @@ h1{
 	border-radius: 10px;
     border: 1px solid silver;
     cursor: pointer;
-    margin-left: 5px;
+    padding: 4px 4px;
+}
+
+#sizebutton2{
+	margin-top: 7px;
+	margin-bottom: 7px;
+	background-color: black;
+	color: white;
+	font-family: Verdana;
+	font-weight: bold;
+	font-size: 10px;
+	border-radius: 10px;
+    border: 1px solid silver;
+    cursor: pointer;
+    margin-left: 6px;
     padding: 4px 4px;
 }
 
@@ -513,16 +557,4 @@ h1{
 
 .active2{
 	display: block;
-}
-
-.selected{
-	-webkit-box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
-	-moz-box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
-	box-shadow: 0px -1px 25px 0px rgba(245,248,250,1);
-}
-
-.unselected{
-	-webkit-box-shadow: 0px 0px 0px 0px rgba(245,248,250,1);
-	-moz-box-shadow: 0px 0px 0px 0px rgba(245,248,250,1);
-	box-shadow: 0px 0px 0px 0px rgba(245,248,250,1);
 }

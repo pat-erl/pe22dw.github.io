@@ -6,7 +6,7 @@ var Table = {
     
     fadeTable: function() {
         
-        Game.gameArea.style.opacity = "0.8";
+        Game.gameArea.style.opacity = "0.7";
     },
     
     showTable: function() {
@@ -18,7 +18,7 @@ var Table = {
         
         Game.bet100.disabled = true;
         Game.bet500.disabled = true;
-        Game.bet1000.disabled = true;
+        Game.bet2500.disabled = true;
         
         Game.betAmount.style.opacity = 0.3;
     },
@@ -27,7 +27,7 @@ var Table = {
         
         Game.bet100.disabled = false;
         Game.bet500.disabled = false;
-        Game.bet1000.disabled = false;
+        Game.bet2500.disabled = false;
         
         Game.betAmount.style.opacity = 1;
     },
