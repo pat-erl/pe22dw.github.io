@@ -35,7 +35,7 @@ var Chip = {
             
             if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
             
-                Chip.blackjackAmount = Game.playerBet / 2;
+                Chip.blackjackAmount = Math.round(Game.playerBet / 2);
             
                 var imageChip3 = new Image();
             

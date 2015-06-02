@@ -14,21 +14,19 @@ var Table = {
         Game.gameArea.style.opacity = "1";
     },
     
-    fadeRadiobuttons: function() {
+    fadeBetSelect: function() {
         
-        Game.bet100.disabled = true;
-        Game.bet500.disabled = true;
-        Game.bet2500.disabled = true;
-        
-        Game.betAmount.style.opacity = 0.3;
+        Game.betSlider.disabled = true;
+        Game.betSlider.style.opacity = 0.3;
+        Game.betNumber.disabled = true;
+        Game.betNumber.style.visibility = "hidden";
     },
     
-    showRadioButtons: function() {
+    showBetSelect: function() {
         
-        Game.bet100.disabled = false;
-        Game.bet500.disabled = false;
-        Game.bet2500.disabled = false;
-        
-        Game.betAmount.style.opacity = 1;
+        Game.betSlider.disabled = false;
+        Game.betSlider.style.opacity = 1;
+        Game.betNumber.disabled = false;
+        Game.betNumber.style.visibility = "visible";
     },
 };

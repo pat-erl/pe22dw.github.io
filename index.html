@@ -5,15 +5,14 @@
      	<title>Individuellt Mjukvaruutvecklingsprojekt</title>
      	<link rel="stylesheet" href="css/style.css" />
     </head>
-    
     <body id="mybody">
         <div id="loadingimage">
                 <img src="pics/loading.gif" alt="loading" height="50" width="50">
                 <p id="loading">LOADING MENU..</p>
-            </div>
+        </div>
         <div id="container">
             <header>
-                <h1>Skapad av Patrik Erlandsson WP14 LNU</h1>
+                <h1>Created by Patrik Erlandsson WP14 LNU</h1>
             </header>
             <div id="gamearea">
                 <div id="dealerarea">
@@ -22,7 +21,7 @@
                     </canvas>
                     <div id ="tutorialdiv">
                         <p id ="tutorialtext"></p>
-                        <button id="closebutton" type="button">MAIN MENU</button>
+                        <button id="closebutton" type="button">CLOSE</button>
                         <button id="nextbutton" type="button">NEXT</button>
                     </div>
                 </div>
@@ -30,6 +29,10 @@
                     <canvas id="playercards" width="260" height="100">
                         
                     </canvas>
+                    <div id="menubuttons">
+                        <button id="resumegamebutton" type="button">RESUME GAME</button>
+                        <button id="newgamebutton" type="button">NEW GAME</button>
+                    </div>
                     <div id="playerbuttons">
                         <button id="betbutton" type="button">PLACE BET</button>
                         <button id="standbutton" type="button">STAND</button>
@@ -38,32 +41,30 @@
                     </div>
                 </div>
                 <div id="betamount">
-                    <div class="radio">
-                        <input id="bet100" type="radio" name="betamount" value="100" checked>
-                        <label for="bet100">$100</label>
-                        <input id="bet500" type="radio" name="betamount" value="500">
-                        <label for="bet500">$500</label>
-                        <input id="bet2500" type="radio" name="betamount" value="2500">
-                        <label for="bet2500">$2500</label>
-                    </div>
+                    <p id="betnumber"></p>
+                    <input type="range" id="betslider" class="input"/>
                 </div>
-                <div id="totalwin">
-                    <p id="totalwinamount">+$0</p>
+                <p id="tinymessage"></p>
+            </div>
+             <div id="totalwin">
+                    <p id="totalwinamount"></p>
                 </div>
                 <div id="chipcount">
-                    <p id="chips">$0</p>
-                    <p id="tinymessage"></p>
+                    <p id="chips"></p>
                 </div>
-            </div>
             <div id="back">
-                <button id="backbutton" type="button">MAIN MENU</button>
+                <button id="backbutton" type="button">LEAVE TABLE</button>
                 <button id="strategybutton" type="button">STRATEGY</button>
             </div>
             <div id="togglestrategy">
                 <p id="strategytips"></p>
             </div>
             <div id="extrabuttons">
-                
+                <button id="sizebutton1" type="button">NORMAL VIEW</button>
+                <button id="sizebutton2" type="button">LARGE VIEW</button>
+                <button id="soundsbutton" type="button"></button>
+                <button id="ambiancebutton" type="button"></button>
+                <button id="tutorialbutton" type="button">TUTORIAL</button>
             </div>
         </div>
         <div id="preloader">
@@ -134,7 +135,6 @@
                 <audio src="audio/soundeffects/welcomeback.wav" preload="auto"></audio>
                 <audio src="audio/soundeffects/lose3.wav" preload="auto"></audio>
                 <audio src="audio/soundeffects/swipe.wav" preload="auto"> </audio>
-                <audio src="audio/soundeffects/highclick.wav" preload="auto"></audio>
             </div>
         <script src="js/Table.js"></script>
         <script src="js/Card.js"></script>

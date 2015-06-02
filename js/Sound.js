@@ -15,103 +15,145 @@ var Sound = {
     welcomeback: new Audio('../audio/soundeffects/welcomeback.wav'),
     lose: new Audio('../audio/soundeffects/lose3.wav'),
     swipe: new Audio('../audio/soundeffects/swipe.wav'),
-    outofchips: new Audio("../audio/soundeffects/highclick.wav"),
     
     ambianceStart: function() {
         
         Sound.ambiance.volume = 0.1;
         Sound.ambiance.loop = true;
         Sound.ambiance.play();
-    },
-    
-    ambianceStop: function() {
         
-        Sound.ambiance.pause();
+        Game.ambianceOn = true;
     },
     
     shuffleStart: function() {
         
-        Sound.shuffle.load();
-        Sound.shuffle.volume = 0.4;
-        Sound.shuffle.play();
-        
-        setTimeout(function() {
+        if(Game.soundOn === true) {
             
-            Sound.shuffle.pause();
+            Sound.shuffle.load();
+            Sound.shuffle.volume = 0.4;
+            Sound.shuffle.play();
             
-        },1000);
+            setTimeout(function() {
+                
+                Sound.shuffle.pause();
+                
+            },1000);
+        }
     },
     
     chipStart: function() {
         
-        Sound.chip.volume = 0.4;
-        Sound.chip.play();
+        if(Game.soundOn === true) {
+        
+            Sound.chip.volume = 0.4;
+            Sound.chip.play();
+        }
     },
     
     cardStart: function() {
         
-        Sound.card.volume = 0.3;
-        Sound.card.currentTime = "0.5";
-        Sound.card.play();
+        if(Game.soundOn === true) {
+            
+            Sound.card.volume = 0.3;
+            Sound.card.currentTime = "0.5";
+            Sound.card.play();
+        }
     },
     
     clickStart: function() {
         
-        Sound.click.volume = 0.3;
-        Sound.click.play();  
+        if(Game.soundOn === true) {
+            
+            Sound.click.volume = 0.3;
+            Sound.click.play();
+        }
     },
     
     winStart: function() {
         
-        Sound.win.volume = 0.2;
-        Sound.win.play();  
+        if(Game.soundOn === true) {
+            
+            Sound.win.volume = 0.2;
+            Sound.win.play();
+        }
     },
     
     doublewinStart: function() {
         
-        Sound.doublewin.volume = 0.2;
-        Sound.doublewin.play();
+        if(Game.soundOn === true) {
+            
+            Sound.doublewin.volume = 0.2;
+            Sound.doublewin.play();
+        }
     },
     
     blackjackStart: function() {
         
-        Sound.blackjack.volume = 0.2;
-        Sound.blackjack.play();
+        if(Game.soundOn === true) {
+            
+            Sound.blackjack.volume = 0.2;
+            Sound.blackjack.play();
+        }
     },
     
     tieStart: function() {
         
-        Sound.tie.volume = 0.3;
-        Sound.tie.play();
+        if(Game.soundOn === true) {
+            
+            Sound.tie.volume = 0.3;
+            Sound.tie.play();
+        }
     },
     
     cashingStart: function() {
         
-        Sound.cashing.volume = 0.1;
-        Sound.cashing.play();
+        if(Game.soundOn === true) {
+            
+            Sound.cashing.volume = 0.1;
+            Sound.cashing.play();
+        }
     },
     
     welcomebackStart: function() {
         
-        Sound.welcomeback.play();
+        if(Game.soundOn === true) {
+            
+            Sound.welcomeback.play();
+        }
     },
     
     loseStart: function() {
         
-        Sound.lose.volume = 0.3;
-        Sound.lose.play();  
+        if(Game.soundOn === true) {
+            
+            Sound.lose.volume = 0.3;
+            Sound.lose.play();
+        }
     },
     
     swipeStart: function() {
         
-        Sound.swipe.volume = 0.3;
-        Sound.swipe.currentTime = "0.2";
-        Sound.swipe.play();  
+        if(Game.soundOn === true) {
+            
+            Sound.swipe.volume = 0.3;
+            Sound.swipe.currentTime = "0.2";
+            Sound.swipe.play();
+        }
     },
     
-    outofchipsStart: function() {
+    allStop: function() {
         
-        Sound.outofchips.volume = 0.3;
-        Sound.outofchips.play();
+        Game.soundOn = false;
+    },
+    
+    allStart: function() {
+        
+        Game.soundOn = true;
+    },
+    
+    ambianceStop: function() {
+      
+        Sound.ambiance.pause();
+        Game.ambianceOn = false;
     },
 };

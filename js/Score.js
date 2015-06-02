@@ -32,23 +32,13 @@ var Score = {
      // Jämför spelarens och dealerns poäng och ser till att rätt belopp och rätt meddelande visas.
     compare: function() {
         
-        // För att simulera blackjack vid testning
-        /*Game.playerScore = 21;
-        Game.playerCardCounter = 2;
-        Game.playerHasBlackjack = true; */
-        
         // Detta händer om spelaren har mer än 21 poäng.
         if(Game.playerScore > 21) {
             
             Score.dealerWin();
         
-        // Detta händer om dealern har mer än 21 poäng.    
-        } else if(Game.dealerScore > 21) {
-            
-            Score.playerWin();
-            
-        // Detta händer om spelaren har mer poäng än dealern.
-        } else if(Game.playerScore > Game.dealerScore) {
+        // Detta händer om dealern har mer än 21 poäng eller om spelaren har mer poäng än dealern.    
+        } else if(Game.dealerScore > 21 || Game.playerScore > Game.dealerScore) {
             
             if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
                 
@@ -89,9 +79,9 @@ var Score = {
             
         Chip.displayChip();
             
-        Game.playerChips = Game.playerChips + (Game.playerBet * 2.5);
+        Game.playerChips = Game.playerChips + (Math.round(Game.playerBet * 2.5));
         
-        Game.totalWinAmount = Game.playerBet * 2.5;
+        Game.totalWinAmount = Math.round(Game.playerBet * 2.5);
         
         setTimeout(function(){
             

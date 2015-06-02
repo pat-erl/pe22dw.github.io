@@ -11,7 +11,7 @@ var GameProgress = {
     
     load: function() {
         
-        Game.playerChips = localStorage.getItem('playerchips');
+        Game.playerChips = parseInt(localStorage.getItem('playerchips'),10);
     },
     
     erase: function() {
