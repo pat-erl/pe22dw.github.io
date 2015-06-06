@@ -7,6 +7,7 @@ var Game = {
     
     container: document.getElementById("container"),
     gameArea: document.getElementById("gamearea"),
+    dealerArea: document.getElementById("dealerarea"),
     startButton: document.getElementById("startbutton"),
     betButton: document.getElementById("betbutton"),
     hitButton: document.getElementById("hitbutton"),
@@ -39,6 +40,7 @@ var Game = {
     tutorialButton: document.getElementById("tutorialbutton"),
     soundsButton: document.getElementById("soundsbutton"),
     ambianceButton: document.getElementById("ambiancebutton"),
+    applicationInfo: document.getElementById("applicationinfo"),
 
     playerScore: 0,
     dealerScore: 0,
@@ -62,12 +64,16 @@ var Game = {
         // Gör hela innehållet synligt.
         Game.container.style.visibility = "visible";
         
-        // Döljer och visar aktuella divs och knappar..
+        Game.dealerArea.style.backgroundImage = "url('../pics/blackjackbanner.jpg')";
+        
+        // Döljer och visar aktuella divs och knappar.
         Game.resumeGameButton.className = "inactive";
         Game.newGameButton.className = "active";
         
         Game.extraButtons.className = "active2";
         Game.tutorialButton.style.backgroundColor = "green";
+        
+        Game.applicationInfo.className = "active2";
         
         if(Game.soundOn === true) {
             
@@ -109,7 +115,7 @@ var Game = {
         Table.fadeTable();
         
         // Resume-knappen visas bara om det finns ett gammalt spel att återuppta.
-        Game.playerChips = localStorage.getItem('playerchips');
+        GameProgress.retrieve();
         
         if(Game.playerChips > 0) {
             
@@ -120,9 +126,11 @@ var Game = {
         Game.resumeGameButton.onclick = function () {
                 
                 Sound.clickStart();
+                Game.dealerArea.style.backgroundImage = "none";
                 Game.resumeGameButton.className = "inactive";
                 Game.newGameButton.className = "inactive";
                 Game.extraButtons.className = "inactive";
+                Game.applicationInfo.className = "inactive";
                 Sound.welcomebackStart();
                 Game.newGame();
             };
@@ -131,22 +139,26 @@ var Game = {
             
             Sound.clickStart();
             
-            // Om det finns ett gammalt spel så informeras spelaren om detta innan ett nytt startas.
+            // Om det finns ett gammalt spel så måste spelaren bekräfta att det skrivs över innan ett nytt spel startar.
             
             if(Game.playerChips > 0) {
                 
+                // Visar en bekräfta-ruta på samma ställe som tutorial visas.
+                
                 Game.newGameButton.className = "inactive";
+                Game.dealerArea.style.backgroundImage = "none";
                 Game.resumeGameButton.className = "inactive";
                 Game.extraButtons.className = "inactive";
+                Game.applicationInfo.className = "inactive";
                 Game.tutorialDiv.className = "active2";
                 Game.tutorialText.innerHTML = "Overwrite existing game?<br /><br />";
                 Game.tutorialDiv.style.textAlign = "center";
                 Game.tutorialText.style.fontWeight = "bold";
-                Game.tutorialText.style.color = "dodgerblue";
+                Game.tutorialText.style.color = "white";
                 Game.closeButton.innerHTML = "CANCEL";
                 Game.nextButton.innerHTML = "OVERWRITE";
                 
-                document.getElementById("playercards").className = "inactive"; // Lösning för att dölja bakomliggande canvas när menyn visas, annars störde det knapparna.
+                document.getElementById("playercards").className = "inactive"; // Lösning för att dölja bakomliggande canvas när fönstret visas, annars störde det interaktionen med knapparna.
                 
                 Game.closeButton.onclick = function() {
                     
@@ -171,19 +183,19 @@ var Game = {
                     Game.closeButton.innerHTML = "CLOSE";
                     Game.nextButton.innerHTML = "NEXT";
                     document.getElementById("playercards").className = "active2";
-                    
                     Game.tutorialDiv.className = "inactive";
-                    Game.extraButtons.className = "inactive";
                     Game.playerChips = 1000;
                     GameProgress.save();
                     Game.newGame();
                 };
                 
             } else {
-                    
+                
+                Game.dealerArea.style.backgroundImage = "none";    
                 Game.newGameButton.className = "inactive";
                 Game.resumeGameButton.className = "inactive";
                 Game.extraButtons.className = "inactive";
+                Game.applicationInfo.className = "inactive";
                 Game.playerChips = 1000;
                 GameProgress.save();
                 Game.newGame();
@@ -212,11 +224,12 @@ var Game = {
             
             if(Game.tutorialDiv.className === "inactive") {
                 
+                Game.dealerArea.style.backgroundImage = "none";
                 Game.newGameButton.className = "inactive";
                 Game.resumeGameButton.className = "inactive";
                 Game.tutorialDiv.className = "active2";
                 Game.tutorialButton.style.backgroundColor = "red";
-                Game.tutorialText.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet nulla congue, malesuada tellus id, blandit nulla. Vestibulum semper interdum orci, in condimentum enim venenatis sit amet. Proin lacinia, ipsum a elementum congue, ex mi semper ex, non auctor dui nisi non libero. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus laoreet eget eros a facilisis. Sed rhoncus metus vel arcu aliquam hendrerit. Proin nulla justo, pretium non ante ut, eleifend consectetur sapien. Integer quis ornare urna. Etiam luctus tristique leo.";
+                Game.tutorialText.innerHTML = "* Get a higher score than the dealer without exceeding 21.<br />* Aces are worth 11 or 1 points.<br />* Kings, queens, jacks and tens are worth 10 points.<br />* All cards from 2-9 are worth their specific value in points.<br />* Dealer must stand on 17 points and higher.<br />* 21 points with two cards beats 21 points with several.<br />* You can choose to stand, hit or double.<br />* Doubling is only avaliable on the first two cards.";
                 Game.nextButton.innerHTML = "NEXT";
                 Game.nextButton.style.backgroundColor = "green";
                 
@@ -232,13 +245,13 @@ var Game = {
             
             if(Game.nextButton.style.backgroundColor === "green") {
                 
-                Game.tutorialText.innerHTML = "Vivamus justo nisi, accumsan sed lorem sit amet, pulvinar scelerisque nisi. Curabitur quis facilisis nisi. Ut cursus sit amet leo mattis pellentesque. Mauris tempus libero quam, at volutpat metus molestie vitae. Phasellus malesuada libero at augue maximus, a egestas lorem mattis. Etiam ultrices malesuada ex ut aliquet. Proin sit amet arcu nec tortor commodo sodales eget id mauris. In non dapibus odio, et suscipit felis.";
+                Game.tutorialText.innerHTML = "* All winning hands pays out 2:1.<br />* Tied hands returns the betamount.<br />* 21 points with two cards (blackjack) pays out 2.5:1.<br />* If both you and the dealer has a blackjack it is a tie.<br />* The deck is reshuffled as soon as it runs out.<br />* Optional strategytips are available during gameplay.<br />* You can leave and return with the same amount of chips.";
                 Game.nextButton.innerHTML = "PREV";
                 Game.nextButton.style.backgroundColor = "red";
                 
             } else {
                 
-                Game.tutorialText.innerHTML = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet nulla congue, malesuada tellus id, blandit nulla. Vestibulum semper interdum orci, in condimentum enim venenatis sit amet. Proin lacinia, ipsum a elementum congue, ex mi semper ex, non auctor dui nisi non libero. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus laoreet eget eros a facilisis. Sed rhoncus metus vel arcu aliquam hendrerit. Proin nulla justo, pretium non ante ut, eleifend consectetur sapien. Integer quis ornare urna. Etiam luctus tristique leo.";
+                Game.tutorialText.innerHTML = "* Get a higher score than the dealer without exceeding 21.<br />* Aces are worth 11 or 1 points.<br />* Kings, queens, jacks and tens are worth 10 points.<br />* All cards from 2-9 are worth their specific value in points.<br />* Dealer must stand on 17 points and higher.<br />* 21 points with two cards beats 21 points with several.<br />* You can choose to stand, hit or double.<br />* Doubling is only avaliable on the first two cards.";
                 Game.nextButton.innerHTML = "NEXT";
                 Game.nextButton.style.backgroundColor = "green";
             }
@@ -307,17 +320,18 @@ var Game = {
         Game.betButton.className = "active";
         Game.betAmount.className = "active2";
         
+        // Sätter rätt värden på bet-slidern.
         Game.betSlider.max = Game.playerChips;
         Game.betSlider.min = Game.playerChips / 20;
         Game.betSlider.step = Game.playerChips / 20;
-        Game.betSlider.value = (Game.playerChips / 5);
-        Game.playerBet = Math.round(Game.betSlider.value);
-        Game.betNumber.innerHTML = "$" + Math.round(Game.betSlider.value);
+        Game.betSlider.value = Game.playerChips / 20;
+        Game.playerBet = Math.ceil(Game.betSlider.value);
+        Game.betNumber.innerHTML = "$" + Math.ceil(Game.betSlider.value);
         
         Game.betSlider.oninput = function() {
             
-            Game.playerBet = Math.round(Game.betSlider.value);
-            Game.betNumber.innerHTML = "$" + Math.round(Game.betSlider.value);
+            Game.playerBet = Math.ceil(Game.betSlider.value);
+            Game.betNumber.innerHTML = "$" + Math.ceil(Game.betSlider.value);
         };
         
         Game.betButton.onclick = function () {
@@ -358,6 +372,7 @@ var Game = {
         Game.backButton.disabled = true;
         Game.backButton.style.opacity = 0.3;
         
+        // Bestämmer vilken färg det ska vara på texten ovanför betchipet och dubbelknappen.
         if(Game.playerBet >= 1 && Game.playerBet < 250) {
             
             Chip.textColor = "cyan";
@@ -379,92 +394,84 @@ var Game = {
             Chip.textColor = "white";
         }
         
-        if(Game.playerChips < Game.playerBet) {
-            
-            var noChips = "NOT ENOUGH CHIPS!";
-            Messages.textColor = "red";
-            Messages.displayMessage(noChips);
-            Table.showRadioButtons();
-            Game.betButton.className = "active";
-            
-        } else {
-            
-            Game.playerChips -= Game.playerBet;
-            Game.chips.innerHTML = "$" + Game.playerChips;
-            
-            GameProgress.save();
-            
-            Game.statusColor();
-            
-            Chip.displayChip();
+        Game.playerChips -= Game.playerBet;
+        Game.chips.innerHTML = "$" + Game.playerChips;
         
-            setTimeout(function(){
-                
-                Game.playerHits();
-                Game.dealerHits();
-                        
-            },500); 
+        // Sparar markerantalet i localstorage.    
+        GameProgress.save();
             
-            setTimeout(function(){
-                        
-                Game.playerHits();
-                Strategy.calculate();
-                
-            },1500); 
+        Game.statusColor();
             
-            setTimeout(function(){
+        Chip.displayChip();
+        
+        setTimeout(function(){
                 
-                if(Game.playerScore === 21 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
+            Game.playerHits();
+            Game.dealerHits();
+                        
+        },500); 
+            
+        setTimeout(function(){
+                        
+            Game.playerHits();
+            Strategy.calculate();
+                
+        },1500); 
+        
+        // Om spelaren får blackjack så är det automatiskt vinst (om inte dealern har A eller 10), annars dyker spelknapparna upp och spelaren får göra sitt val.
+            
+        setTimeout(function(){
+                
+            if(Game.playerScore === 21 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
                     
-                    Score.blackJack();
+                Score.blackJack();
                     
-                } else {
+            } else {
                     
-                    Game.hitButton.className = "active";
-                    Game.standButton.className = "active";
-                    Game.doubleButton.className = "active";
-                    Game.doubleButton.disabled = false;
-                    Game.doubleButton.style.backgroundColor = Chip.textColor;
-                    Game.doubleButton.style.opacity = 1;
-                }
+                Game.hitButton.className = "active";
+                Game.standButton.className = "active";
+                Game.doubleButton.className = "active";
+                Game.doubleButton.disabled = false;
+                Game.doubleButton.style.backgroundColor = Chip.textColor;
+                Game.doubleButton.style.opacity = 1;
+            }
                     
-            },2000); 
+        },2000); 
     
-            // Härifrån bestämmer spelaren vad som händer.
+        // Härifrån bestämmer spelaren vad som händer.
             
-            Game.hitButton.onclick = function () {
+        Game.hitButton.onclick = function () {
                 
-                Game.playerHits();
-                Strategy.calculate();
-                Game.doubleButton.disabled = true;
-                Game.doubleButton.style.opacity = 0.3;
-            };
+            Game.playerHits();
+            Strategy.calculate();
+            Game.doubleButton.disabled = true;
+            Game.doubleButton.style.opacity = 0.3;
+        };
             
-            Game.standButton.onclick = function () {
+        Game.standButton.onclick = function () {
                 
-                Sound.clickStart();
-                Game.hitButton.className = "inactive";
-                Game.standButton.className = "inactive";
-                Game.doubleButton.className = "inactive";
-                Game.strategyTips.innerHTML = "";
+            Sound.clickStart();
+            Game.hitButton.className = "inactive";
+            Game.standButton.className = "inactive";
+            Game.doubleButton.className = "inactive";
+            Game.strategyTips.innerHTML = "";
                 
-                Game.dealerHits();
-            };
+            Game.dealerHits();
+        };
             
-            Game.doubleButton.onclick = function () {
+        Game.doubleButton.onclick = function () {
                 
-                if(Game.playerChips < Game.playerBet) {
+            if(Game.playerChips < Game.playerBet) {
             
-                    var noChips = "NOT ENOUGH CHIPS!";
-                    Messages.textColor = "red";
-                    Messages.displayMessage(noChips);
+                var noChips = "NOT ENOUGH CHIPS!";
+                Messages.textColor = "red";
+                Messages.displayMessage(noChips);
                     
-                } else {
+            } else {
                     
-                    Game.playerDoubles();
-                }
-            };
-        }
+                Game.playerDoubles();
+            }
+        };
     },
     
     playerHits: function() {
@@ -626,7 +633,7 @@ var Game = {
         
         // Rensar canvas, nollställer variabler och sparar antalet marker i localstorage.
         
-        Game.strategyTips.innerHTML = ""; // Extra rensning av strategitips för om spelaren tryckt på hit-knappen för snabbt flera gånger så det inte har hunnit ske då.
+        Game.strategyTips.innerHTML = ""; // Extra rensning av strategitips för om spelaren tryckt på hit-knappen för snabbt flera gånger så det inte har hunnit ske.
         
         if(Messages.textColorP === "chartreuse" || Messages.textColorP === "gold" || Messages.textColorP === "dodgerblue") {
        
@@ -652,7 +659,7 @@ var Game = {
                 
                 Game.chips.style.fontWeight = "bold";
                 Game.chips.innerHTML = "$" + Game.playerChips;
-                Game.chips.style.color = Messages.textColorP;
+                Game.chips.style.color = Chip.textColor;
             
                 Game.totalWinAmountP.style.webkitAnimation = 'none'; 
             
@@ -661,7 +668,7 @@ var Game = {
                 setTimeout(function() {
                     
                     Game.totalWin.style.visibility = "visible";
-                    Game.totalWinAmountP.style.color = Messages.textColorP;
+                    Game.totalWinAmountP.style.color = Chip.textColor;
                     Game.totalWinAmountP.innerHTML = "+$" + Game.totalWinAmount;
                 
                     Game.totalWinAmountP.style.webkitAnimation = '';
@@ -734,6 +741,7 @@ var Game = {
                 
             } else {
                 
+                // Sparar markerantalet i localstorage.
                 GameProgress.save();
                 
                 Table.showBetSelect();
@@ -742,17 +750,18 @@ var Game = {
                 Game.backButton.disabled = false;
                 Game.backButton.style.opacity = 1;
                 
+                // Sätter rätt värden på bet-slidern.
                 Game.betSlider.max = Game.playerChips;
                 Game.betSlider.min = Game.playerChips / 20;
                 Game.betSlider.step = Game.playerChips / 20;
-                Game.betSlider.value = (Game.playerChips / 5);
-                Game.playerBet = Math.round(Game.betSlider.value);
-                Game.betNumber.innerHTML = "$" + Math.round(Game.betSlider.value);
+                Game.betSlider.value = Game.playerChips / 20;
+                Game.playerBet = Math.ceil(Game.betSlider.value);
+                Game.betNumber.innerHTML = "$" + Math.ceil(Game.betSlider.value);
                 
                 Game.betSlider.oninput = function() {
                     
-                    Game.playerBet = Math.round(Game.betSlider.value);
-                    Game.betNumber.innerHTML = "$" + Math.round(Game.betSlider.value);
+                    Game.playerBet = Math.ceil(Game.betSlider.value);
+                    Game.betNumber.innerHTML = "$" + Math.ceil(Game.betSlider.value);
                 };
             
                 Game.betButton.onclick = function () {
@@ -777,13 +786,17 @@ var Game = {
         GameProgress.erase();
         Game.init();
         
+        // Visar en tack-ruta på samma ställe som tutorial visas.
+        
+        Game.dealerArea.style.backgroundImage = "none";
         Game.newGameButton.className = "inactive";
         Game.extraButtons.className = "inactive";
+        Game.applicationInfo.className = "inactive";
         Game.tutorialDiv.className = "active2";
         Game.tutorialText.innerHTML = "Thank you for playing!<br /><br />";
         Game.tutorialDiv.style.textAlign = "center";
         Game.tutorialText.style.fontWeight = "bold";
-        Game.tutorialText.style.color = "yellow";
+        Game.tutorialText.style.color = "white";
         Game.nextButton.className ="inactive";
         Game.closeButton.className ="inactive";
         
@@ -801,6 +814,7 @@ var Game = {
     
     statusColor: function() {
         
+        // Bestämmer vilken färg det ska vara på ramen runt totala markerna.
         if(Game.playerChips >= 1 && Game.playerChips < 2500) {
     
             Game.chips.style.borderColor = "dodgerblue";

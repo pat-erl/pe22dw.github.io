@@ -1,10 +1,10 @@
 "use strict";
 
+// Funktioner för uträkning och visning av strategitips.
+
 var Strategy = {
     
     calculate: function() {
-        
-        // Uträkningar för bästa strategi i varje situation.
         
         var optimalDecision = "";
         
@@ -152,6 +152,8 @@ var Strategy = {
                 }
             }
         }
+        
+        // Strategitipsen visas bara i situationer där spelaren har ett val.
         
         if(Game.playerScore === 21 && Game.playerCardCounter === 2 && Game.dealerScore !== 11 && Game.dealerScore !== 10) {
             

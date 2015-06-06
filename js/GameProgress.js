@@ -1,6 +1,6 @@
 "use strict";
 
-// Funktioner för att spara och hämta antalet marker i local storage.
+// Funktioner för att spara, hämta och ta bort antalet marker i local storage.
 
 var GameProgress = {
     
@@ -9,7 +9,7 @@ var GameProgress = {
         localStorage.setItem('playerchips', Game.playerChips);
     },
     
-    load: function() {
+    retrieve: function() {
         
         Game.playerChips = parseInt(localStorage.getItem('playerchips'),10);
     },

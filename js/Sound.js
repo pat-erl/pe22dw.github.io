@@ -1,5 +1,7 @@
 "use strict";
 
+// Funktioner för uppspelning av ljudeffekter och bakgrundsljud.
+
 var Sound = {
     
     ambiance: new Audio('../audio/ambiance/casino.mp3'),

@@ -8,6 +8,8 @@ var Messages = {
     textColorP: "",
     textColorD: "",
     
+    // Visar litet meddelande ovanför totala markerna.
+    
     displayMessage: function(message) {
         
         Sound.loseStart();
@@ -23,6 +25,8 @@ var Messages = {
     },
     
     displayMessageP: function(message) {
+        
+        // Visar meddelande på spelarens halva.
         
         var canvas7 = document.getElementById("playercards");
         var context7 = canvas7.getContext('2d');
@@ -60,6 +64,8 @@ var Messages = {
     
     displayMessageD: function(message) {
         
+        // Visar meddelande på dealerns halva.
+        
         var canvas8 = document.getElementById("dealercards");
         var context8 = canvas8.getContext('2d');
         
@@ -80,6 +86,8 @@ var Messages = {
     },
     
     displayMessageOther: function(message) {
+        
+        // Visar litet meddelande till vänster om kort och marker.
         
         var canvas9 = document.getElementById("dealercards");
         var context9 = canvas9.getContext('2d');

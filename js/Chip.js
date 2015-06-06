@@ -1,6 +1,6 @@
 "use strict";
 
-// Funktioner för visning av en visuell spelmark med canvas.
+// Funktioner för visning av visuella spelmarker med canvas.
 
 var Chip = {
     
@@ -14,6 +14,8 @@ var Chip = {
         var context3 = canvas3.getContext('2d');
         var canvas6 = document.getElementById("dealercards");
         var context6 = canvas6.getContext('2d');
+        
+        // Chips som visas vid vinst.
         
         if(Game.playerScore > Game.dealerScore || Game.dealerScore > 21) {
             
@@ -32,6 +34,8 @@ var Chip = {
                 context3.fillText("$" + Game.playerBet, 9, 39);
                     
             },500); 
+            
+            // Extrachips för blackjack.
             
             if(Game.playerScore === 21 && Game.playerCardCounter === 2) {
             
@@ -54,6 +58,8 @@ var Chip = {
                 },500); 
             }
             
+            // Extrachips för vinst vid dubbling.
+            
             if (Game.playerHasDoubled === true) {
                 
                 var imageChip5 = new Image();
@@ -69,6 +75,8 @@ var Chip = {
             }
             
         } else {
+            
+            // Chip som visas när spelaren gör en satsning.
             
             Sound.chipStart();
             
@@ -87,6 +95,8 @@ var Chip = {
     },
     
     displayDoubleChip: function() {
+        
+        // Chip som visas när spelaren gör en dubbling.
         
         Sound.chipStart();
         
